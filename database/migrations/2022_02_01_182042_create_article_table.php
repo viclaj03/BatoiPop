@@ -13,11 +13,11 @@ class CreateArticleTable extends Migration
      */
     public function up()
     {
-        Schema::create('article', function (Blueprint $table) {
+        Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('propriety_id')->references('id')->on('users');
             $table->foreignId('buyer_id')->nullable()->references('id')->on('users');
-            $table->foreignId('category_id')->references('id')->on('category');
+            $table->foreignId('category_id')->references('id')->on('categories');
             $table->string('name');
             $table->string('description');
             $table->double('price');
@@ -33,6 +33,6 @@ class CreateArticleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('article');
+        Schema::dropIfExists('articles');
     }
 }

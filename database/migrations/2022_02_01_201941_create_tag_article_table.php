@@ -14,8 +14,8 @@ class CreateTagArticleTable extends Migration
     public function up()
     {
         Schema::create('tag_article', function (Blueprint $table) {
-            $table->foreignId('article_id')->references('id')->on('article');
-            $table->foreignId('tag_id')->references('id')->on('tag');
+            $table->foreignId('article_id')->references('id')->on('articles');
+            $table->foreignId('tag_id')->references('id')->on('tags');
             $table->primary(['article_id','tag_id']);
             $table->timestamps();
         });

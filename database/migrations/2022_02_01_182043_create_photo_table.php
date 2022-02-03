@@ -13,10 +13,10 @@ class CreatePhotoTable extends Migration
      */
     public function up()
     {
-        Schema::create('photo', function (Blueprint $table) {
+        Schema::create('photos', function (Blueprint $table) {
             $table->id();
-            $table->string('imagen');
-            $table->foreignId('id_product')->references('id')->on('articles');
+            $table->string('image');
+            $table->foreignId('id_article')->references('id')->on('articles');
             $table->timestamps();
         });
     }

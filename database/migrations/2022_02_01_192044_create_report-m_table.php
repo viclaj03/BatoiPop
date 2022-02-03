@@ -13,9 +13,9 @@ class CreateReportMTable extends Migration
      */
     public function up()
     {
-        Schema::create('report_message', function (Blueprint $table) {
+        Schema::create('report_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('message_id')->references('id')->on('message');
+            $table->foreignId('message_id')->unique()->references('id')->on('messages');
             $table->string('description')->nullable();
             $table->timestamps();
         });

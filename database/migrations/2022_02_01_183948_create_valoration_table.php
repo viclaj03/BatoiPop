@@ -13,11 +13,11 @@ class CreateValorationTable extends Migration
      */
     public function up()
     {
-        Schema::create('valoration', function (Blueprint $table) {
+        Schema::create('valorations', function (Blueprint $table) {
             $table->id();
             $table->integer('stars');
             $table->string('commentary');
-            $table->foreignId('id_product')->references('id')->on('article');
+            $table->foreignId('id_product')->unique()->references('id')->on('articles');
             $table->timestamps();
         });
     }

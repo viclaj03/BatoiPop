@@ -17,7 +17,7 @@ class CreateTagArticleTable extends Migration
             $table->foreignId('article_id')->references('id')->on('articles');
             $table->foreignId('tag_id')->references('id')->on('tags');
             $table->primary(['article_id','tag_id']);
-            $table->timestamps();
+
         });
     }
 

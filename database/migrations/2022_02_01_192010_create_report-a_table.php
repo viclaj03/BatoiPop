@@ -15,8 +15,9 @@ class CreateReportATable extends Migration
     {
         Schema::create('report_articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->references('id')->on('articles');
+            $table->foreignId('article_id')->references('id')->on('articles')->onDelete('cascade');
             $table->string('description')->nullable();
+            $table->boolean('accepted')->nullable();
             $table->timestamps();
         });
     }

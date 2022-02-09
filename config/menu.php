@@ -2,13 +2,12 @@
 return [
     ['Home'=>'/'],
     ['Usuarios'=>'/user'],
-    ['Comentario'=>'/comenaty'],
+    ['Comentario'=>'/comments'],
     ['Articulos'=>'/articles'],
     ['Denuncias'=>[
-        'Todas las Denuncias'=>'/a_la_mierda',
-        'Usuarios'=>'/a_la_mierda',
-        'Comentario'=>'/a_la_mierda',
-        'Articulos'=>'/a_la_mierda'
+        'Usuarios'=>'/report-users',
+        'Comentario'=>'/reportMessage',
+        'Articulos'=>'/reportArticles'
     ]],
     ['Empleados'=>'/employee'],
 ];

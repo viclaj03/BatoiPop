@@ -20,9 +20,17 @@
                     @endif
                 @endforeach
             </ul>
-            <form class="d-flex">
-                <a href="{{url('/logout')}}">
-                <button class="btn btn-outline-light" type="submit" >
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <x-dropdown-link :href="route('logout')"
+                                 onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                    {{ __('Log Out') }}
+                </x-dropdown-link>
+            </form>
+            <form class="d-flex" action="{{url('/logout')}}">
+                <button class="btn btn-outline-light" type="submit">
                     Exit
                 </button>
                 </a>

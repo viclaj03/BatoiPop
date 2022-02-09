@@ -6,9 +6,10 @@ use App\Models\Message;
 use App\Models\ReportArticle;
 use App\Models\ReportMessage;
 use App\Models\User;
+use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ReportMessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
-        return view('users.userList',compact('users'));
+        $reportMessage= ReportMessage::paginate(10);
+        return view('report.reportList',compact('reportMessage'));
     }
 
     /**
@@ -50,16 +51,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        $reportArticle = 0;
-        $reportMessage= 0;
-        foreach ($user->articles as $article){
-            $reportArticle += $article->reports->where('accepted',true)->count();
-        }
-        foreach ($user->messageTransmitter as $message){
-            $reportMessage += $message->reports->where('accepted',true)->count();
-        }
-        return view('users.fitxa',compact('user','reportArticle','reportMessage'));
+        //
     }
 
     /**
@@ -70,8 +62,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -92,25 +85,30 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $reportMessage = ReportMessage::findOrFail($id);
+        $reportMessage->delete();
+        return back();
+    }
+
+    public function acceptedMessage($id)
+    {
+        $offer = ReportMessage::findOrFail($id);
+        $offer->accepted = true;
+        $offer->save();
+        return back();
+    }
+
+    public function rejectedMessage($id)
+    {
+        $offer = ReportMessage::findOrFail($id);
+        $offer->accepted = false;
+        $offer->save();
+        return back();
+    }
+
+    public function showReportByUser($id){
         $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->route('user.index');
-    }
-
-    public function usersReport(){
-
-        $reportsMessage = ReportMessage::with('message')->where('accepted',true)->get();
-        $reportsArticle = ReportArticle::with('article')->where('accepted',true)->get();
-        $allReports = $reportsMessage->concat($reportsArticle)->groupBy('nameUser');
-
-        return view('report.reportUsers',compact('allReports'));
-    }
-
-    public function showUserReport(){
-
-        $reportsMessage = ReportMessage::with('message')->where('accepted',true)->get();
-        $reportsArticle = ReportArticle::with('article')->where('accepted',true)->get();
-        $allReports = $reportsMessage->concat($reportsArticle)->groupBy('nameUser');
-        return view('report.reportUsers',compact('allReports'));
+        $reportMessage = $user->message->where('accepted')->paginate(8);
+        return view('report.reportList',compact('reportMessage'));
     }
 }

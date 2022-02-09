@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class ReportArticle extends Model
 {
     use HasFactory;
+
+    public  function article(){
+        return $this->belongsTo(Article::class);
+    }
+
+    public function getNameUserAttribute(){
+        return $this->article->user->name;
+    }
 }

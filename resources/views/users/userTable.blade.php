@@ -10,14 +10,14 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($users as $employe)
+    @foreach($users as $user)
     <tr>
-        <td>{{$employe->id}}</td>
-        <td>{{$employe->name}}</td>
-        <td>{{$employe->email}}</td>
+        <td>{{$user->id}}</td>
+        <td>{{$user->name}}</td>
+        <td>{{$user->email}}</td>
         <td>
-            @if($employe->imagen)
-            <img src="{{asset($employe->imagen)}}" width="50px">
+            @if($user->imagen)
+            <img src="{{asset($user->imagen)}}" width="50px">
             @else
                 <img src="{{asset('images/no-photo-employee.png')}}" width="50px">
             @endif
@@ -25,15 +25,9 @@
         <td>
             <button
                 class="btn btn-sm"
-                title="Ver autor"
+                title="Ver Usurio"
             >
-                <i class="bi bi-eye"></i>
-            </button>
-            <button
-                class="btn btn-sm"
-                title="Ver libros"
-            >
-                <i class="bi bi-pencil"></i>
+                <a href="{{route('user.show',$user)}}"> <i class="bi bi-eye"></i> </a>
             </button>
             <button
                 class="btn btn-sm"

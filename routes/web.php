@@ -47,6 +47,7 @@ Route::get('/reportArticle/{id}/accepted',[ReportArticleController::class,'accep
 Route::get('/reportArticle/{id}/rejected',[ReportArticleController::class,'rejectedArticle'])->name('reportArticle.rejected');
 
 
+r
 /*
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

@@ -22,9 +22,4 @@ class Article extends Model
     public  function reports(){
         return $this->hasMany(ReportArticle::class);
     }
-
-    public  function user(){
-        return $this->belongsTo('App\Models\User','owner_id','id');
-    }
-
 }

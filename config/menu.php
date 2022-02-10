@@ -2,7 +2,7 @@
 return [
     ['Home'=>'/'],
     ['Usuarios'=>'/user'],
-    ['Comentario'=>'/comments'],
+    ['Categorias'=>'/category'],
     ['Articulos'=>'/articles'],
     ['Denuncias'=>[
         'Usuarios'=>'/report-users',

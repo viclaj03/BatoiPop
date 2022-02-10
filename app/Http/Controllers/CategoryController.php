@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class ArticleContrller extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,10 @@ class ArticleContrller extends Controller
      */
     public function index()
     {
-        $articles = Article::paginate(10);
-        return view('article.articleList',compact('articles'));
+        $categories = Category::paginate(10);
+
+        return view('category.list',compact('categories'));
+
     }
 
     /**
@@ -47,8 +50,7 @@ class ArticleContrller extends Controller
      */
     public function show($id)
     {
-        $article = Article::findOrFail($id);
-
+        //
     }
 
     /**
@@ -82,9 +84,6 @@ class ArticleContrller extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::findOrFail($id);
-        $article->delete();
-        return redirect()->route('articles.index');
-
+        //
     }
 }

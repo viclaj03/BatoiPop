@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleContrller;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MessageController;
@@ -29,6 +30,8 @@ Route::resource('/user',UserController::class);
 Route::resource('/reportMessage',ReportMessageController::class);
 Route::resource('/reportArticles',ReportArticleController::class);
 Route::resource('/articles',ArticleContrller::class);
+Route::resource('/category',CategoryController::class);
+
 Route::resource('/message',MessageController::class);
 
 Route::get('/report-users',[UserController::class, 'usersReport'])->name('user.repor');

@@ -1,38 +1,43 @@
-<h1>Listado de Articulos</h1>
+
+<h1>Listado de Articulos </h1>
 <table class="table table-striped table-hover">
     <thead class="thead-dark bg-primary">
     <tr>
         <th>Id</th>
         <th>Nombre</th>
         <th>Email</th>
-        <th>Categoria</th>
-        <th>Loacalización</th>
-        <th>Fecha de subida</th>
+        <th>Foto</th>
+        <th>Articulos</th>
         <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
-    @foreach($articles as $article)
+    @foreach($categories as $categoria)
         <tr>
-            <td>{{$article->id}}</td>
-            <td>{{$article->name}}</td>
-            <td>{{$article->price}} €</td>
-            <td>{{$article->category->name}} </td>
-            <td>{{$article->location}} </td>
-            <td>{{ \Carbon\Carbon::make($article->created_at)->format("d-m-y")}} </td>
+            <td>{{$categoria->id}}</td>
+            <td>{{$categoria->name}}</td>
+            <td>{{$categoria->desc}}</td>
             <td>
-                @if($article->imagen)
-                    <img src="{{asset($article->imagen)}}" width="50px">
+                @if($categoria->image)
+                    <img src="{{asset($categoria->image)}}" width="50px">
                 @else
                     <img src="{{asset('images/no-photo-employee.png')}}" width="50px">
                 @endif
             </td>
+            <td>{{$categoria->article->count()}}</td>
+
             <td>
                 <button
                     class="btn btn-sm"
-                    title="Ver Usurio"
+                    title="Ver autor"
                 >
-                    <a href="{{route('articles.show',$article)}}"> <i class="bi bi-eye"></i> </a>
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button
+                    class="btn btn-sm"
+                    title="Ver libros"
+                >
+                    <i class="bi bi-pencil"></i>
                 </button>
                 <button
                     class="btn btn-sm"

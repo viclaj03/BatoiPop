@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
-use App\Models\ReportArticle;
-use App\Models\ReportMessage;
-use App\Models\User;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ArticleContrller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
-        return view('users.userList',compact('users'));
+        $articles = Article::paginate(10);
+        return view('article.articleList',compact('articles'));
     }
 
     /**
@@ -50,16 +47,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        $reportArticle = 0;
-        $reportMessage= 0;
-        foreach ($user->articles as $article){
-            $reportArticle += $article->reports->where('accepted',true)->count();
-        }
-        foreach ($user->messageTransmitter as $message){
-            $reportMessage += $message->reports->where('accepted',true)->count();
-        }
-        return view('users.fitxa',compact('user','reportArticle','reportMessage'));
+        $article = Article::findOrFail($id);
+
     }
 
     /**
@@ -70,8 +59,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -92,18 +82,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->route('user.index');
+        $article = Article::findOrFail($id);
+        $article->delete();
+        return redirect()->route('articles.index');
+
     }
-
-    public function usersReport(){
-
-        $reportsMessage = ReportMessage::with('message')->where('accepted',true)->get();
-        $reportsArticle = ReportArticle::with('article')->where('accepted',true)->get();
-        $allReports = $reportsMessage->concat($reportsArticle)->groupBy('nameUser');
-
-        return view('report.reportUsers',compact('allReports'));
-    }
-
 }

@@ -15,8 +15,8 @@ class CreateArticleTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('owner_id')->references('id')->on('users');
-            $table->foreignId('buyer_id')->nullable()->references('id')->on('users');
+            $table->foreignId('owner_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('buyer_id')->nullable()->references('id')->on('users')->nullOnDelete();
             $table->foreignId('category_id')->references('id')->on('categories');
             $table->string('name');
             $table->string('description');

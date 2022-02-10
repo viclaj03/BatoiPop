@@ -22,11 +22,11 @@
                 <td>{{$report->id}}</td>
                 <td>{{$report->article->user->name}}</td>
                 <td>{{$report->description}}</td>
-                <td>{{$report}}</td>
+                <td>{{$report->userReport->name}}</td>
 
                 <td>
-                    <a href="{{route('reportMessage.rejected',$report)}}"><i class="bi bi-hand-thumbs-down"></i></a>
-                    <a href="{{route('reportMessage.accepted',$report)}}"><i class="bi bi-hand-thumbs-up"></i></a>
+                    <a href="{{route('reportArticle.rejected',$report)}}"><i class="bi bi-hand-thumbs-down"></i></a>
+                    <a href="{{route('reportArticle.accepted',$report)}}"><i class="bi bi-hand-thumbs-up"></i></a>
                     <form id="deleteUser" action="{{ route('reportMessage.destroy', $report) }}" method="POST" class="d-inline-block">
                         @method('DELETE')
                         @csrf

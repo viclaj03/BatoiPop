@@ -39,11 +39,8 @@
                                         <th rowspan="2"> NºDenuncias <br> <span id="numberReport"> {{$reportMessage + $reportArticle}}</span> </th>
                                         <td >Articulos: {{$reportArticle}}</td>
                                         <td>
-                                            <button
-                                                class="btn btn-sm"
-                                                title="Ver Usurio"
-                                            >jjj
-                                            </button>
+                                            <a href="{{route('user.report-article',$user)}}"> <i class="bi bi-eye"></i> </a>
+
                                         </td>
                                     </tr>
                                     <tr>

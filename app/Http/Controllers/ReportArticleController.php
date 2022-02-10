@@ -15,7 +15,7 @@ class ReportArticleController extends Controller
      */
     public function index()
     {
-        $reportArticle = ReportArticle::paginate(10);
+        $reportArticle = ReportArticle::paginate(8);
         return view('report.reportList',compact('reportArticle'));
     }
 
@@ -87,7 +87,7 @@ class ReportArticleController extends Controller
         return back();
     }
 
-    public function acceptedMessage($id)
+    public function acceptedArticle($id)
     {
         $offer = ReportArticle::findOrFail($id);
         $offer->accepted = true;
@@ -95,7 +95,7 @@ class ReportArticleController extends Controller
         return back();
     }
 
-    public function rejectedMessage($id)
+    public function rejectedArticle($id)
     {
         $offer = ReportArticle::findOrFail($id);
         $offer->accepted = false;
@@ -104,10 +104,9 @@ class ReportArticleController extends Controller
     }
 
 
-    //NO HECHO SDFASJEEGUOSERGUISEGUEOFGUIHSEGVSVOSDUIHGVUOSDHGU
     public function showReportByUser($id){
         $user = User::findOrFail($id);
-        $reportMessage = $user->article->where('accepted');
-        return view('report.reportList',compact('reportMessage'));
+        $reportArticle = $user->articleReportAccepted()->where('accepted')->paginate(10);
+        return view('report.reportList',compact('reportArticle'));
     }
 }

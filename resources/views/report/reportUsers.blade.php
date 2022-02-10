@@ -23,12 +23,12 @@
                                 @else
                                 <tr>
                                     @endif
-                                <td>{{$report[0]->message->user->id}}</td>
+                                    <td>{{ $report[0]->message?$report[0]->message->user->id:$report[0]->article->user->id}}</td>
                                 <td>{{$key}}</td>
-                                <td>{{$report[0]->message->user->email}}</td>
+                                <td>{{$report[0]->message?$report[0]->message->user->email:$report[0]->article->user->email}}</td>
                                 <td>
-                                    @if($report[0]->message->user->imagen)
-                                        <img src="{{asset($report[0]->message->user->imagen)}}" width="50px">
+                                    @if($report[0]->message?$report[0]->message->user->imagen:'')
+                                        <img src="{{$report[0]->message?asset($report[0]->message->user->imagen):$report[0]->article->user->imagen}}" width="50px">
                                     @else
                                         <img src="{{asset('images/no-photo-employee.png')}}" width="50px">
                                     @endif
@@ -39,7 +39,7 @@
                                         class="btn btn-sm"
                                         title="Ver Usurio"
                                     >
-                                       <a href="{{route('user.show',$report[0]->message->user->id)}}"> <i class="bi bi-eye"></i> </a>
+                                       <a href="{{route('user.show',$report[0]->message?$report[0]->message->user->id:$report[0]->article->user->id)}}"> <i class="bi bi-eye"></i> </a>
                                     </button>
                                     <button
                                         class="btn btn-sm"

@@ -106,11 +106,4 @@ class UserController extends Controller
         return view('report.reportUsers',compact('allReports'));
     }
 
-    public function showUserReport(){
-
-        $reportsMessage = ReportMessage::with('message')->where('accepted',true)->get();
-        $reportsArticle = ReportArticle::with('article')->where('accepted',true)->get();
-        $allReports = $reportsMessage->concat($reportsArticle)->groupBy('nameUser');
-        return view('report.reportUsers',compact('allReports'));
-    }
 }

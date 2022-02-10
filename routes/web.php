@@ -22,11 +22,11 @@ Route::get('/', function () {
 
 Route::resource('/employee',EmployeeController::class);
 Route::resource('/user',UserController::class);
-
+/*
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
-
+*/
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

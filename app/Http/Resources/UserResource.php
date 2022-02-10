@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 
-class ArticleResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,19 +21,18 @@ class ArticleResource extends JsonResource
     {
         $totalStars = 0;
         $valoration = $totalStars;
-        if (count($this->user->valorations) != 0) {
-            foreach ($this->user->valorations as $valorationItem) {
+        if (count($this->valorations) != 0) {
+            foreach ($this->valorations as $valorationItem) {
                 $totalStars += $valorationItem->stars;
             }
-            $valoration = ($totalStars / count($this->user->valorations));
+            $valoration = ($totalStars / count($this->valorations));
         }
         return [
             "id"=>$this->id,
             "name"=>$this->name,
-            "owner"=> [
-                'name'=>$this->user->name,
-                'img'=>$this->user->imagen],
+            "img"=>$this->imagen,
             "valoration"=> $valoration ,
+
             "category"=>$this->category->name,
             "tags"=> $this->tags,
             "description"=>$this->description,

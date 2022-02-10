@@ -56,8 +56,9 @@ class apiArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $article = new  ArticleResource($article);
-        return response()->json($article,200);
+        $article2 = new  ArticleResource($article);
+        dd($article2);
+        return response()->json($article2,200);
     }
 
     /**

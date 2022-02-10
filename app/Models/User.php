@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function valorations(){
+            return $this->hasMany('App\Models\Valoration','id_user_receptor','id');
+    }
 }

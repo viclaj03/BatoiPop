@@ -1078,7 +1078,12 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2022-02-08T15:44:51+00:00"
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2022-02-01T16:13:57+00:00"
+
         },
         {
             "name": "laravel/sanctum",
@@ -1193,6 +1198,11 @@
                 "laravel",
                 "serializable"
             ],
+            "support": {
+                "issues": "https://github.com/laravel/serializable-closure/issues",
+                "source": "https://github.com/laravel/serializable-closure"
+            },
+
             "time": "2022-02-01T16:29:39+00:00"
         },
         {
@@ -5443,6 +5453,10 @@
                 "faker",
                 "fixtures"
             ],
+            "support": {
+                "issues": "https://github.com/FakerPHP/Faker/issues",
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.19.0"
+            },
             "time": "2022-02-02T17:38:57+00:00"
         },
         {

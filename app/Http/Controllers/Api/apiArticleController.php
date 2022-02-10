@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Models\ReportArticle;
 use App\Models\Valoration;
@@ -24,7 +25,7 @@ class apiArticleController extends Controller
             return $query->where('category_id',$category_id);
         })->when($name,function($query,$name) {
             return $query->where('name',$name);
-        })->get();
+        })->paginate(9);
         return response()->json($article,200);
 
     }
@@ -55,6 +56,7 @@ class apiArticleController extends Controller
      */
     public function show(Article $article)
     {
+        $article = new  ArticleResource($article);
         return response()->json($article,200);
     }
 

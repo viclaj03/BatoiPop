@@ -16,7 +16,7 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            'propriety_id'=>User::inRandomOrder()->first(),
+            'owner_id'=>User::inRandomOrder()->first(),
             'category_id'=>Category::inRandomOrder()->first(),
             'name'=>$this->faker->name(),
             'description'=>$this->faker->text(100),

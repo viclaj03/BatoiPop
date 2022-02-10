@@ -16,4 +16,12 @@ class ReportArticle extends Model
     public function getNameUserAttribute(){
         return $this->article->user->name;
     }
+
+    public function userReport(){
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+
+
+
+
 }

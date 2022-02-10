@@ -29,9 +29,12 @@
                                     </tr>
                                     <tr>
                                         <th>Localizacion </th>
-                                        <td colspan="2">{{$user->location}}</td>
+                                        <td colspan="2">
+                                        <iframe src="{{$user->location}}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                        </td>
                                     </tr>
                                     <tr>
+
                                         <th > Nº Mensajes </th>
                                         <td colspan="2">{{$user->messageTransmitter->count()}}</td>
                                     </tr>
@@ -39,11 +42,8 @@
                                         <th rowspan="2"> NºDenuncias <br> <span id="numberReport"> {{$reportMessage + $reportArticle}}</span> </th>
                                         <td >Articulos: {{$reportArticle}}</td>
                                         <td>
-                                            <button
-                                                class="btn btn-sm"
-                                                title="Ver Usurio"
-                                            >jjj
-                                            </button>
+                                            <a href="{{route('user.report-article',$user)}}"> <i class="bi bi-eye"></i> </a>
+
                                         </td>
                                     </tr>
                                     <tr>

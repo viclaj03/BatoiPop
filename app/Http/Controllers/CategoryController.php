@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
-use App\Models\ReportArticle;
-use App\Models\ReportMessage;
-use App\Models\User;
-use Facade\FlareClient\Report;
+use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class ReportMessageController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +15,10 @@ class ReportMessageController extends Controller
      */
     public function index()
     {
-        $reportMessage= ReportMessage::paginate(8);
-        return view('report.reportList',compact('reportMessage'));
+        $categories = Category::paginate(10);
+
+        return view('category.list',compact('categories'));
+
     }
 
     /**
@@ -29,7 +28,7 @@ class ReportMessageController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.form');
     }
 
     /**
@@ -40,7 +39,11 @@ class ReportMessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category();
+        $category->name= $request->get('title');
+        $category->desc = $request->get('description');
+        //$category->img ;
+        dd($category);
     }
 
     /**
@@ -85,31 +88,6 @@ class ReportMessageController extends Controller
      */
     public function destroy($id)
     {
-        $reportMessage = ReportMessage::findOrFail($id);
-        $reportMessage->delete();
-        return back();
-    }
-
-    public function acceptedMessage($id)
-    {
-        $offer = ReportMessage::findOrFail($id);
-        $offer->accepted = true;
-        $offer->save();
-        return back();
-    }
-
-    public function rejectedMessage($id)
-    {
-        $offer = ReportMessage::findOrFail($id);
-        $offer->accepted = false;
-        $offer->save();
-        return back();
-    }
-
-    public function showReportByUser($id){
-        $user = User::findOrFail($id);
-        $reportMessage = $user->messageReportAccepted()->paginate(8);
-
-        return view('report.reportList',compact('reportMessage'));
+        //
     }
 }

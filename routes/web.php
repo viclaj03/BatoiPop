@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArticleContrller;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MessageController;
@@ -27,15 +29,23 @@ Route::resource('/employee',EmployeeController::class);
 Route::resource('/user',UserController::class);
 Route::resource('/reportMessage',ReportMessageController::class);
 Route::resource('/reportArticles',ReportArticleController::class);
+Route::resource('/articles',ArticleContrller::class);
+Route::resource('/category',CategoryController::class);
+
 Route::resource('/message',MessageController::class);
 
 Route::get('/report-users',[UserController::class, 'usersReport'])->name('user.repor');
 
 Route::get('/report-user-message/{id}',[ReportMessageController::class, 'showReportByUser'])->name('user.report-message');
+Route::get('/report-user-article-{id}',[ReportArticleController::class,'showReportByUser'])->name('user.report-article');
 
 
-Route::get('/report/{id}/accepted',[ReportMessageController::class,'acceptedMessage'])->name('reportMessage.accepted');
-Route::get('/report/{id}/rejected',[ReportMessageController::class,'rejectedMessage'])->name('reportMessage.rejected');
+Route::get('/reportMessage/{id}/accepted',[ReportMessageController::class,'acceptedMessage'])->name('reportMessage.accepted');
+Route::get('/reportMessage/{id}/rejected',[ReportMessageController::class,'rejectedMessage'])->name('reportMessage.rejected');
+
+Route::get('/reportArticle/{id}/accepted',[ReportArticleController::class,'acceptedArticle'])->name('reportArticle.accepted');
+Route::get('/reportArticle/{id}/rejected',[ReportArticleController::class,'rejectedArticle'])->name('reportArticle.rejected');
+
 
 
 /*

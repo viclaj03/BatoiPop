@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
-use App\Models\ReportArticle;
-use App\Models\ReportMessage;
-use App\Models\User;
-use Facade\FlareClient\Report;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
-class ReportMessageController extends Controller
+class ArticleContrller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +14,8 @@ class ReportMessageController extends Controller
      */
     public function index()
     {
-        $reportMessage= ReportMessage::paginate(8);
-        return view('report.reportList',compact('reportMessage'));
+        $articles = Article::paginate(10);
+        return view('article.articleList',compact('articles'));
     }
 
     /**
@@ -51,7 +47,8 @@ class ReportMessageController extends Controller
      */
     public function show($id)
     {
-        //
+        $article = Article::findOrFail($id);
+
     }
 
     /**
@@ -85,31 +82,9 @@ class ReportMessageController extends Controller
      */
     public function destroy($id)
     {
-        $reportMessage = ReportMessage::findOrFail($id);
-        $reportMessage->delete();
-        return back();
-    }
+        $article = Article::findOrFail($id);
+        $article->delete();
+        return redirect()->route('articles.index');
 
-    public function acceptedMessage($id)
-    {
-        $offer = ReportMessage::findOrFail($id);
-        $offer->accepted = true;
-        $offer->save();
-        return back();
-    }
-
-    public function rejectedMessage($id)
-    {
-        $offer = ReportMessage::findOrFail($id);
-        $offer->accepted = false;
-        $offer->save();
-        return back();
-    }
-
-    public function showReportByUser($id){
-        $user = User::findOrFail($id);
-        $reportMessage = $user->messageReportAccepted()->paginate(8);
-
-        return view('report.reportList',compact('reportMessage'));
     }
 }

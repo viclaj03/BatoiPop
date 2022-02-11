@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class ReportArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>[]]);
+    }
     /**
      * Display a listing of the resource.
      *

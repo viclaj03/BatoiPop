@@ -9,12 +9,16 @@ class Message extends Model
 {
     use HasFactory;
 
-    public  function user(){
+    public  function userTransmitter(){
         return  $this->belongsTo(User::class,'id_transmitter');
     }
 
+    public  function userReciver(){
+        return  $this->belongsTo(User::class,'id_receiver');
+    }
+
     public  function article(){
-        return  $this->belongsTo('App\Models\Article','id_article','id');
+        return  $this->belongsTo(Article::class,'id_article','id');
     }
 
     public  function reports(){

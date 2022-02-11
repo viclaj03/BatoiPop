@@ -18,7 +18,7 @@ class ReportMessage extends Model
     }*/
 
     public function getNameUserAttribute(){
-        return $this->message->user->name;
+        return $this->message->userTransmitter->name;
     }
 }
 

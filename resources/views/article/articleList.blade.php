@@ -5,12 +5,14 @@
             <div class="row gx-4 gx-lg-5 row-cols-12 row-cols-md-12 row-cols-xl-12 justify-content-center">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     @include('article.articleTable')
-                    <div class="d-flex justify-content-center">
-                        {!! $articles->links() !!}
-                    </div>
 
                 </div>
             </div>
+
         </div>
     </section>
+    <div class="d-flex justify-content-center">
+        {!! $articles->links() !!}
+    </div>
+
 @endsection

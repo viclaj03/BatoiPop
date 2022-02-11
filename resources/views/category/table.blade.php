@@ -29,21 +29,11 @@
             <td>
                 <button
                     class="btn btn-sm"
-                    title="Ver autor"
+                    title="Editar categoria"
                 >
-                    <i class="bi bi-eye"></i>
-                </button>
-                <button
-                    class="btn btn-sm"
-                    title="Ver libros"
-                >
+                    <a href="{{route('category.edit',$categoria)}}">
                     <i class="bi bi-pencil"></i>
-                </button>
-                <button
-                    class="btn btn-sm"
-                    title="Ver libros"
-                >
-                    <i class="bi bi-trash"></i>
+                    </a>
                 </button>
             </td>
         </tr>

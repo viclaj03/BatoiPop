@@ -46,12 +46,12 @@ class CategoryController extends Controller
      */
     public function store(CategoryValidator $request)
     {
+
         $category = new Category();
         $category->name= $request->get('name');
         $category->desc = $request->get('description');
         $originalName = explode($request->file('photo')->getClientOriginalExtension(),$request->file('photo')->getClientOriginalName())[0];
-        $category->save();
-        $nameFile = $category->id . $originalName  .  $request->file('photo')->getClientOriginalExtension();
+        $nameFile = generar_token_seguro(5) . $originalName  .  $request->file('photo')->getClientOriginalExtension();
         $category->image = $request->file('photo')->move('images',$nameFile );
         $category->save();
         return redirect(route('category.index'));
@@ -111,6 +111,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        if ($category->article->count()){
+            abort(403,'no puedes borrar esta categoria');
+        }
+        $category->delete();
+        return redirect(route('category.index'));
     }
 }

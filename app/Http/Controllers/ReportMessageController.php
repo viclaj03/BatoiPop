@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailReportMessage;
 use App\Models\Message;
 use App\Models\ReportArticle;
 use App\Models\ReportMessage;
 use App\Models\User;
 use Facade\FlareClient\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ReportMessageController extends Controller
 {
@@ -96,9 +98,11 @@ class ReportMessageController extends Controller
 
     public function acceptedMessage($id)
     {
-        $offer = ReportMessage::findOrFail($id);
-        $offer->accepted = true;
-        $offer->save();
+        $report = ReportMessage::findOrFail($id);
+        $report->accepted = true;
+        $report->save();
+
+        Mail::to($report->message->userTransmitter->email)->send(new MailReportMessage($report));
         return back();
     }
 

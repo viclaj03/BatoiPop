@@ -14,7 +14,7 @@ class ReportMessage extends Model
     }
 
    /*public function user(){
-        $this->belongsTo(User::class,Message::class,'id_transmitter','message_id','id');
+        $this->belongsTo(User::class,Message::class,'message_id','id_transmitter');
     }*/
 
     public function getNameUserAttribute(){

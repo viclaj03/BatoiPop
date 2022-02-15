@@ -27,6 +27,11 @@
             <td>{{$categoria->article->count()}}</td>
 
             <td>
+                <form id="deleteUser" action="{{ route('category.destroy', $categoria->id) }}" method="POST" class="d-inline-block">
+                    @method('DELETE')
+                    @csrf
+                    <button  ><i class="bi bi-trash"></i></button>
+                </form>
                 <button
                     class="btn btn-sm"
                     title="Editar categoria"

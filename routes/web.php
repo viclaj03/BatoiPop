@@ -76,7 +76,8 @@ Route::get('/google-callback', function () {
         Auth::login($userExist);
         return redirect('/');
     } else{
-        echo "Vete a tomar por culo de mi pagina " . $user->name;
+        echo "Vete a tomar por culo de mi pagina " . $user->name ;
+        die();
     }
     // $user->token
 });

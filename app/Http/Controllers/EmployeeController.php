@@ -88,6 +88,7 @@ class EmployeeController extends Controller
         $employee->imagen = $request->file('photo')->move('images', $nameFile);
     }
         $employee->save();
+        return redirect()->route('employee.index');
     }
 
     /**

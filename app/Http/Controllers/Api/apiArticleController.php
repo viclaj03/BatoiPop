@@ -9,6 +9,7 @@ use App\Models\ReportArticle;
 use App\Models\Valoration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class apiArticleController extends Controller
 {
@@ -21,10 +22,22 @@ class apiArticleController extends Controller
     {
         $category_id = $request->input('category_id');
         $name = $request->input('name');
+        $price1 = $request->input('price1');
+        $price2 = $request->input('price2');
+        $price = [];
+        if ($price1 && $price2) {
+            $price = [$price1, $price2];
+        }
+        $tag_id = $request->input('tag_id');
         $article = Article::when($category_id,function($query,$category_id) {
             return $query->where('category_id',$category_id);
         })->when($name,function($query,$name) {
-            return $query->where('name',$name);
+            return $query->where('name','LIKE','%'.$name.'%');
+        })->when($price,function($query,$price) {
+            return $query->whereBetween('price',[$price[0],$price[1]]);
+        })->when($tag_id,function($query,$tag_id) {
+            $articles_id = DB::table('tag_article')->select('article_id')->where('tag_id',$tag_id);
+            return $query->whereIn('id',$articles_id);
         })->paginate(9);
         return response()->json($article,200);
 

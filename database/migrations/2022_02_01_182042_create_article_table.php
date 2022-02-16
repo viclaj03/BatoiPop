@@ -21,7 +21,8 @@ class CreateArticleTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->double('price');
-            $table->string('location');
+            $table->float('latitud');
+            $table->float('longitud');
             $table->timestamps();
         });
     }

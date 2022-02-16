@@ -19,7 +19,6 @@ class CreateValorationTable extends Migration
             $table->string('commentary')->nullable();
             $table->foreignId('id_user_receptor')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('id_user_emissor')->references('id')->on('users')->onDelete('cascade');
-            //$table->primary(['id_user_receptor','id_user_receptor']);
             $table->timestamps();
         });
     }

@@ -20,13 +20,24 @@
             <tr class="table-primary">
                 @endif
             <td>{{$report->id}}</td>
-            <td>{{$report->message->user->name}}</td>
+            <td>{{$report->message->userTransmitter->name}}</td>
             <td>{{$report->description}}</td>
             <td>{{$report->message->article->user->name}}</td>
 
             <td>
+                <a href="{{route('message.show',$report->message)}}"><i class="bi bi-eye"></i></a>
+
+                @if( $report->accepted === null ||  $report->accepted   )
                 <a href="{{route('reportMessage.rejected',$report)}}"><i class="bi bi-hand-thumbs-down"></i></a>
-                <a href="{{route('reportMessage.accepted',$report)}}"><i class="bi bi-hand-thumbs-up"></i></a>
+                    @else
+                    <i class="bi bi-hand-thumbs-down-fill"></i>
+                @endif
+                @if($report->accepted)
+                    <i class="bi bi-hand-thumbs-up-fill"></i>
+                @else
+                    <a href="{{route('reportMessage.accepted',$report)}}"><i class="bi bi-hand-thumbs-up"></i></a>
+                @endif
+
                 <form id="deleteUser" action="{{ route('reportMessage.destroy', $report) }}" method="POST" class="d-inline-block">
                     @method('DELETE')
                     @csrf

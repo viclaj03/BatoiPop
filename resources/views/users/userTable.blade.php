@@ -29,12 +29,6 @@
             >
                 <a href="{{route('user.show',$user)}}"> <i class="bi bi-eye"></i> </a>
             </button>
-            <button
-                class="btn btn-sm"
-                title="Ver libros"
-            >
-                <i class="bi bi-trash"></i>
-            </button>
         </td>
     </tr>
     @endforeach

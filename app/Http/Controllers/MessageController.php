@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>[]]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +19,8 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $message = Message::all();
-        return view('message.messageList',compact('message'));
+       /* $message = Message::all();
+        return view('message.messageList',compact('message'));*/
     }
 
     /**
@@ -48,7 +52,8 @@ class MessageController extends Controller
      */
     public function show($id)
     {
-        //
+        $message = Message::findOrFail($id);
+        return view('message.fitxa',compact('message'));
     }
 
     /**

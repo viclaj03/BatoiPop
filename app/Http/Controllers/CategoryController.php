@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryUpdateValidator;
+use App\Http\Requests\CategoryValidator;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>[]]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,13 +44,17 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryValidator $request)
     {
+
         $category = new Category();
-        $category->name= $request->get('title');
+        $category->name= $request->get('name');
         $category->desc = $request->get('description');
-        //$category->img ;
-        dd($category);
+        $originalName = explode($request->file('photo')->getClientOriginalExtension(),$request->file('photo')->getClientOriginalName())[0];
+        $nameFile = generar_token_seguro(5) . $originalName  .  $request->file('photo')->getClientOriginalExtension();
+        $category->image = $request->file('photo')->move('images',$nameFile );
+        $category->save();
+        return redirect(route('category.index'));
     }
 
     /**
@@ -65,7 +76,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('category.form',compact('category'));
+
+
     }
 
     /**
@@ -75,9 +89,18 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryUpdateValidator $request, $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->name= $request->get('name');
+        $category->desc = $request->get('description');
+
+        if ($request->file('photo')){
+            $nameFile = str_replace('images/', '', $category->image);
+            $category->image = $request->file('photo')->move('images', $nameFile);
+        }
+        $category->save();
+        return redirect(route('category.index'));
     }
 
     /**
@@ -88,6 +111,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        if ($category->article->count()){
+            abort(403,'no puedes borrar esta categoria');
+        }
+        $category->delete();
+        return redirect(route('category.index'));
     }
 }

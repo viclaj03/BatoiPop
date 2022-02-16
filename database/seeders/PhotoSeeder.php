@@ -17,7 +17,7 @@ class PhotoSeeder extends Seeder
     {
         $articles = Article::all();
         $articles->each(function ($article){
-            Photo::factory()->count(1)->create(['id_article'=>$article->id]);
+            Photo::factory()->count(rand(1,3))->create(['id_article'=>$article->id]);
         });
     }
 }

@@ -54,11 +54,11 @@ Route::get('/article-by-user/{id}',[ArticleController::class,'searchByUser'])->n
 Route::get('/article-search',[ArticleController::class,'searchByParameters'])->name('article.search');
 Route::get('/user-search',[UserController::class,'searchByParameters'])->name('user.search');
 
-/*
+
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
-*/
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

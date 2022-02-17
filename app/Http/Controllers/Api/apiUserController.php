@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -38,6 +39,7 @@ class apiUserController extends Controller
      */
     public function show(User $user)
     {
+        $user = new  UserResource($user);
         return response()->json($user,200);
     }
 

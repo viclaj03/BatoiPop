@@ -54,8 +54,10 @@ class User extends Authenticatable
         return $this->hasManyThrough(ReportMessage::class,Message::class,'id_transmitter','message_id',);
     }
 
-    public function getMessageReportAttribute(){
-        return $this->messageTransmitter->reports
+    public function getMessageReportAttribute()
+    {
+        return $this->messageTransmitter->reports;
+    }
     public function valorations(){
         return $this->hasMany('App\Models\Valoration','id_user_receptor','id');
     }

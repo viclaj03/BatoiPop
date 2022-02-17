@@ -32,12 +32,9 @@ class UserResource extends JsonResource
             "name"=>$this->name,
             "img"=>$this->imagen,
             "valoration"=> $valoration ,
-
-            "category"=>$this->category->name,
-            "tags"=> $this->tags,
-            "description"=>$this->description,
-            "price"=>$this->price,
             "location"=>$this->location,
+            "valorationsUser"=> $this->valorations,
+
         ];
     }
 }

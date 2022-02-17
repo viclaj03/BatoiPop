@@ -67,9 +67,18 @@ class User extends Authenticatable
         return $this->hasManyThrough(ReportMessage::class,Message::class,'id_transmitter','message_id')->where('accepted',true);
     }
 
-
     public function valorations(){
         return $this->hasMany('App\Models\Valoration','id_user_receptor','id');
     }
+    public  function scopeName( $query, $name){
+        if ($name){
+            return $query->where('name','like','%'.$name.'%');
+        }
+    }
 
+    public  function scopeEmail( $query, $name){
+        if ($name){
+            return $query->where('email','like','%'.$name.'%');
+        }
+    }
 }

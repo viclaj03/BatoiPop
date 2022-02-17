@@ -20,7 +20,7 @@
             <tr class="table-primary">
                 @endif
                 <td>{{$report->id}}</td>
-                <td>{{$report->message->user->name}}</td>
+                <td>{{$report->message->userTransmitter->name}}</td>
                 <td>{{$report->description}}</td>
                 <td>{{$report->message->article->user->name}}</td>
 

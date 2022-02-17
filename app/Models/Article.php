@@ -22,4 +22,22 @@ class Article extends Model
     public  function reports(){
         return $this->hasMany(ReportArticle::class);
     }
+
+    public  function photos(){
+        return $this->hasMany(Photo::class,'id_article','id');
+    }
+
+
+
+
+
+    public  function buyer(){
+        return $this->belongsTo(User::class,'buyer_id','id');
+    }
+
+    public  function scopeName( $query, $name){
+        if ($name){
+            return $query->where('name','like','%'.$name.'%');
+        }
+    }
 }

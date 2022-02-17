@@ -11,7 +11,7 @@
                                 <table @class("table table-bordered")>
                                     @endif
                                     <tr>
-                                        <th rowspan="8">
+                                        <th rowspan="9">
                                             @if($user->imagen)
                                                 <img src="{{$user->imagen}}" width="50%" alt="perfilPhoto" class="rounded border border-primary">
                                             @else
@@ -19,6 +19,7 @@
                                             @endif
                                         </th>
                                     </tr>
+
                                     <tr>
                                         <th>Nombre</th>
                                         <td colspan="2">{{$user->name}}</td>
@@ -28,13 +29,23 @@
                                         <td colspan="2">{{$user->email}}</td>
                                     </tr>
                                     <tr>
+                                        <th>Puntucion</th>
+                                        <td colspan="2">
+                                        @for($i=1;$i<=$stars; $i++)
+                                                <i class="bi bi-star-fill"></i>
+                                            @endfor
+                                            @for($i=1;$i<=$starsClear; $i++)
+                                                <i class="bi bi-star"></i>
+                                            @endfor
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th>Localizacion </th>
                                         <td colspan="2">
                                         <iframe src="{{$user->location}}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                                         </td>
                                     </tr>
                                     <tr>
-
                                         <th > Nº Mensajes </th>
                                         <td colspan="2">{{$user->messageTransmitter->count()}}</td>
                                     </tr>
@@ -55,7 +66,9 @@
                                     <tr>
                                         <th> Nº Productos </th>
                                         <td>{{$user->articles->count()}}</td>
-                                        <td>ll</td>
+                                        <td>
+                                            <a href="{{route('article.user',$user)}}"> <i class="bi bi-eye"></i> </a>
+                                        </td>
                                     </tr>
                                     <tr >
                                         <td colspan="4" class="text-center">

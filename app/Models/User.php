@@ -42,6 +42,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
     public function articles(){
         return $this->hasMany(Article::class,'owner_id','id');
     }
@@ -50,15 +51,25 @@ class User extends Authenticatable
         return $this->hasMany(Message::class,'id_transmitter','id');
     }
 
-    public function message(){
+    public function messageReport(){
         return $this->hasManyThrough(ReportMessage::class,Message::class,'id_transmitter','message_id',);
     }
 
-    public function getMessageReportAttribute()
-    {
-        return $this->messageTransmitter->reports;
+    public function articleReport(){
+        return $this->hasManyThrough(ReportArticle::class,Article::class,'owner_id','article_id',);
     }
+
+    public function articleReportAccepted(){
+        return $this->hasManyThrough(ReportArticle::class,Article::class,'owner_id','article_id')->where('accepted',true);
+    }
+
+    public function messageReportAccepted(){
+        return $this->hasManyThrough(ReportMessage::class,Message::class,'id_transmitter','message_id')->where('accepted',true);
+    }
+
+
     public function valorations(){
         return $this->hasMany('App\Models\Valoration','id_user_receptor','id');
     }
+
 }

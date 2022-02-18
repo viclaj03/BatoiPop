@@ -21,10 +21,14 @@ class apiArticleController extends Controller
     {
         $category_id = $request->input('category_id');
         $name = $request->input('name');
+        $owner_id = $request->input('owner_id');
+
         $article = Article::when($category_id,function($query,$category_id) {
             return $query->where('category_id',$category_id);
         })->when($name,function($query,$name) {
             return $query->where('name',$name);
+        })->when($owner_id,function($query,$owner_id) {
+            return $query->where('owner_id', $owner_id);
         })->paginate(9);
         return response()->json($article,200);
 
@@ -56,8 +60,8 @@ class apiArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $article = new  ArticleResource($article);
-        return response()->json($article,200);
+        $article2 = new  ArticleResource($article);
+        return response()->json($article2,200);
     }
 
     /**

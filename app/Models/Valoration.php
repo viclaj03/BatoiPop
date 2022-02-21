@@ -10,6 +10,6 @@ class Valoration extends Model
     use HasFactory;
 
     public function user(){
-        return $this->belongsTo(User::class, 'is_user_emissor','id');
+        return $this->belongsTo(User::class, 'id_user_emissor','id');
     }
 }

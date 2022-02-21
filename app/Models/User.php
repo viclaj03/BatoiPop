@@ -70,6 +70,8 @@ class User extends Authenticatable
     public function valorations(){
         return $this->hasMany('App\Models\Valoration','id_user_receptor','id');
     }
+
+
     public  function scopeName( $query, $name){
         if ($name){
             return $query->where('name','like','%'.$name.'%');

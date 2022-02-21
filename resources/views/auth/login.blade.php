@@ -52,5 +52,9 @@
                 </x-button>
             </div>
         </form>
+        <br>
+        <div class="row">
+            <div class="col-md-12"> <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" href="/login-google"><img src="https://img.icons8.com/color/16/000000/google-logo.png">Logueate con google</a> </div>
+        </div> <br>
     </x-auth-card>
 </x-guest-layout>

@@ -20,7 +20,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::paginate(9);
+        $articles = Article::orDoesntHave('reports')->orWhereHas('reports',function($q){
+            $q->where('accepted', false)->orWhere('accepted', null);
+        })->paginate(9);
         return view('article.articleList',compact('articles'));
     }
 

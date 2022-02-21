@@ -21,7 +21,8 @@ class ArticleFactory extends Factory
             'name'=>$this->faker->name(),
             'description'=>$this->faker->text(100),
             'price'=>$this->faker->randomFloat(2,1,2000),
-            'location'=>$this->faker->locale()
+            'latitud'=>$this->faker->latitude(),
+            'longitud'=>$this->faker->longitude(),
         ];
     }
 }

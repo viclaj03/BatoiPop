@@ -25,5 +25,5 @@ Route::apiResource('articles',\App\Http\Controllers\Api\apiArticleController::cl
 Route::apiResource('categories',\App\Http\Controllers\Api\apiCategoryController::class);
 Route::apiResource('users',\App\Http\Controllers\Api\apiUserController::class);
 Route::apiResource('valoraciones',\App\Http\Controllers\Api\ValorationController::class);
-
+Route::apiResource('tags',\App\Http\Controllers\Api\apiTagController::class);
 

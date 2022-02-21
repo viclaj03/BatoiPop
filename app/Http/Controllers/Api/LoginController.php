@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 
 /**
@@ -49,7 +49,7 @@ class LoginController extends Controller
         }
         else
         {
-            return response()->json(['token' => $usuario->createToken($usuario->email)->plainTextToken]);
+            return response()->json(['token' => $usuario->createToken($usuario->email)->plainTextToken,'user'=>$usuario]);
         }
     }
 }

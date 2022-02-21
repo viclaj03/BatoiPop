@@ -4,14 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
+use App\Mail\MailNewArticle;
 use App\Models\Article;
 use App\Models\ReportArticle;
 use App\Models\Valoration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class apiArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum',['except'=>['index','show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,16 +26,44 @@ class apiArticleController extends Controller
      */
     public function index(Request $request)
     {
+        $owner_id = $request->input('owner_id');
         $category_id = $request->input('category_id');
         $name = $request->input('name');
-        $owner_id = $request->input('owner_id');
-
+        $price1 = $request->input('price1');
+        $price2 = $request->input('price2');
+        $price = [];
+        if ($price1 && $price2) {
+            $price = [$price1, $price2];
+        }
+        $latitud = $request->input('latitud');
+        $logitud = $request->input('longitud');
+        $distancia = $request->input('distancia');
+        $parametrosDistancia = [];
+        if ($latitud && $logitud && $distancia) {
+            $parametrosDistancia = [$latitud, $logitud, $distancia];
+        }
+        $tag_id = $request->input('tag_id');
         $article = Article::when($category_id,function($query,$category_id) {
             return $query->where('category_id',$category_id);
         })->when($name,function($query,$name) {
-            return $query->where('name',$name);
+            return $query->where('name','LIKE','%'.$name.'%');
+        })->when($price,function($query,$price) {
+            return $query->whereBetween('price',[$price[0],$price[1]]);
+        })->when($tag_id,function($query,$tag_id) {
+            $articles_id = DB::table('tag_article')->select('article_id')->where('tag_id',$tag_id);
+            return $query->whereIn('id',$articles_id);
+        })->when($parametrosDistancia,function($query,$parametrosDistancia) {
+            return $query->selectRaw("*,
+            ( 6371 * acos( cos( radians(" . $parametrosDistancia[0] . ") ) *
+            cos( radians(latitud) ) *
+            cos( radians(longitud) - radians(" . $parametrosDistancia[1] . ") ) +
+            sin( radians(" . $parametrosDistancia[0] . ") ) *
+            sin( radians(latitud) ) ) )
+            AS distance")->having("distance", "<", $parametrosDistancia[2]);
         })->when($owner_id,function($query,$owner_id) {
             return $query->where('owner_id', $owner_id);
+        })->doesntHave('reports')->orWhereHas('reports',function($q){
+            $q->where('accepted', false)->orWhere('accepted', null);
         })->paginate(9);
         return response()->json($article,200);
 
@@ -43,12 +78,15 @@ class apiArticleController extends Controller
     public function store(Request $request)
     {
         $article = new Article();
-        $article->propriety_id = Auth::user();
-        $article->category_id = $request->category_id;
+        $article->owner_id = $request->user()->id;
+        $article->name = $request->name;
+        $article->category_id = $request->category;
         $article->description = $request->description;
         $article->price = $request->price;
-        $article->location = $request->location;
+        $article->latitud = $request->latitud;
+        $article->longitud = $request->longitud;
         $article->save();
+        //Mail::to($article->user->email)->send(new MailNewArticle($article));
         return response()->json($article,201);
     }
 

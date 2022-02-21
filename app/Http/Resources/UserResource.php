@@ -27,14 +27,19 @@ class UserResource extends JsonResource
             }
             $valoration = ($totalStars / count($this->valorations));
         }
+
+        $valoraciones = [];
+        foreach ($this->valorations as $valorationItem) {
+            $valoration = array($valorationItem->commentary,$valorationItem->user->name, $valorationItem->user->imagen);
+            array_push($valoraciones,$valoration);
+        }
         return [
             "id"=>$this->id,
             "name"=>$this->name,
             "img"=>$this->imagen,
             "valoration"=> $valoration ,
             "location"=>$this->location,
-            "valorationsUser"=> $this->valorations,
-
+            "valorationsUser"=> $valoraciones,
         ];
     }
 }

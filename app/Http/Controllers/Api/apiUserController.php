@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\MailNewUser;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -46,6 +47,7 @@ class apiUserController extends Controller
      */
     public function show(User $user)
     {
+        $user = new  UserResource($user);
         return response()->json($user,200);
     }
 

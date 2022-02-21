@@ -24,4 +24,6 @@ Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::apiResource('articles',\App\Http\Controllers\Api\apiArticleController::class);
 Route::apiResource('categories',\App\Http\Controllers\Api\apiCategoryController::class);
 Route::apiResource('users',\App\Http\Controllers\Api\apiUserController::class);
+Route::apiResource('valoraciones',\App\Http\Controllers\Api\ValorationController::class);
+
 

@@ -12,7 +12,7 @@ class Article extends Model
         return $this->belongsToMany('App\Models\Tag','tag_article');
     }
     public  function category(){
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class,);
     }
 
     public  function user(){
@@ -23,12 +23,15 @@ class Article extends Model
         return $this->hasMany(ReportArticle::class);
     }
 
+
+    public  function messages()
+    {
+        return $this->hasMany(Message::class, 'id_article', 'id');
+    }
+
     public  function photos(){
         return $this->hasMany(Photo::class,'id_article','id');
     }
-
-
-
 
 
     public  function buyer(){

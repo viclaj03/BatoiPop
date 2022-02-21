@@ -17,7 +17,7 @@ class TagSeeder extends Seeder
     {
 
 
-        Tag::factory()->count(100)->create()->each(function ($tag){
+        Tag::factory()->count(10)->create()->each(function ($tag){
             $tag->article()->attach(Article::inRandomOrder()->first());
         });
     }

@@ -27,6 +27,12 @@ class ArticleResource extends JsonResource
             }
             $valoration = ($totalStars / count($this->user->valorations));
         }
+
+        $mensajes = [];
+        foreach ($this->messages as $message) {
+            $mensaje = array($message->message,$message->userTransmitter->name, $message->userTransmitter->imagen);
+            array_push($mensajes,$mensaje);
+        }
         return [
             "id"=>$this->id,
             "name"=>$this->name,
@@ -38,7 +44,9 @@ class ArticleResource extends JsonResource
             "tags"=> $this->tags,
             "description"=>$this->description,
             "price"=>$this->price,
-            "location"=>$this->location,
+            "longitud"=>$this->longitud,
+            "latitud"=>$this->latitud,
+            "messages"=>$mensajes,
         ];
     }
 }

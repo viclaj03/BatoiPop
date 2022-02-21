@@ -22,4 +22,8 @@ class Article extends Model
     public  function reports(){
         return $this->hasMany(ReportArticle::class);
     }
+
+    public  function messages(){
+        return $this->hasMany(Message::class,'id_article','id');
+    }
 }

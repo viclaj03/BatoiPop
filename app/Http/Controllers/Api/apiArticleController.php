@@ -28,6 +28,13 @@ class apiArticleController extends Controller
         if ($price1 && $price2) {
             $price = [$price1, $price2];
         }
+        $latitud = $request->input('latitud');
+        $logitud = $request->input('longitud');
+        $distancia = $request->input('distancia');
+        $parametrosDistancia = [];
+        if ($latitud && $logitud && $distancia) {
+            $parametrosDistancia = [$latitud, $logitud, $distancia];
+        }
         $tag_id = $request->input('tag_id');
         $article = Article::when($category_id,function($query,$category_id) {
             return $query->where('category_id',$category_id);
@@ -38,6 +45,14 @@ class apiArticleController extends Controller
         })->when($tag_id,function($query,$tag_id) {
             $articles_id = DB::table('tag_article')->select('article_id')->where('tag_id',$tag_id);
             return $query->whereIn('id',$articles_id);
+        })->when($parametrosDistancia,function($query,$parametrosDistancia) {
+            return $query->selectRaw("*,
+            ( 6371 * acos( cos( radians(" . $parametrosDistancia[0] . ") ) *
+            cos( radians(latitud) ) *
+            cos( radians(longitud) - radians(" . $parametrosDistancia[1] . ") ) +
+            sin( radians(" . $parametrosDistancia[0] . ") ) *
+            sin( radians(latitud) ) ) )
+            AS distance")->having("distance", "<", $parametrosDistancia[2]);
         })->paginate(9);
         return response()->json($article,200);
 

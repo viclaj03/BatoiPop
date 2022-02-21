@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailNewArticle;
+use App\Mail\MailNewUser;
 use App\Mail\MailReportArticle;
 use App\Models\ReportArticle;
 use App\Models\User;
@@ -99,7 +101,7 @@ class ReportArticleController extends Controller
         $report = ReportArticle::findOrFail($id);
         $report->accepted = true;
         $report->save();
-
+        $article = $report->article;
         Mail::to($report->article->user->email)->send(new MailReportArticle($report));
         return back();
     }

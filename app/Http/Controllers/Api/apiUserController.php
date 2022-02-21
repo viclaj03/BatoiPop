@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MailNewUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class apiUserController extends Controller
 {
@@ -27,7 +29,13 @@ class apiUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
+        //Mail::to($user->email)->send(new MailNewUser($user));
+        return response()->json(['status'=>"success",'data'=>$user],201);
     }
 
     /**

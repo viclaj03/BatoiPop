@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Valoration;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class ValorationSeeder extends Seeder
      */
     public function run()
     {
-        Valoration::factory()->count(4)->create();
+        $users = User::all();
+        $users->each(function ($user){
+            Valoration::factory()->count(1)->create(['id_user_receptor'=>$user->id,'id_user_emissor'=>50]);
+        });
     }
 }

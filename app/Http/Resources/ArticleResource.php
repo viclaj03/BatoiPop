@@ -30,7 +30,7 @@ class ArticleResource extends JsonResource
 
         $mensajes = [];
         foreach ($this->messages as $message) {
-            $mensaje = array($message->message,$message->user->name, $message->user->imagen);
+            $mensaje = array($message->message,$message->userTransmitter->name, $message->userTransmitter->imagen);
             array_push($mensajes,$mensaje);
         }
         return [

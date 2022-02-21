@@ -16,6 +16,7 @@ return [
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'employees',
+
     ],
 
     /*
@@ -43,7 +44,7 @@ return [
         'api' => [
             'driver' => 'session',
             'provider' => 'users',
-            'passwords' => 'users',
+
         ],
     ],
 

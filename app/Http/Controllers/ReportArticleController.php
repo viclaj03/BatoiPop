@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailNewArticle;
+use App\Mail\MailNewUser;
+use App\Mail\MailReportArticle;
 use App\Models\ReportArticle;
 use App\Models\User;
+use http\Message\Body;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ReportArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>[]]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -89,24 +98,28 @@ class ReportArticleController extends Controller
 
     public function acceptedArticle($id)
     {
-        $offer = ReportArticle::findOrFail($id);
-        $offer->accepted = true;
-        $offer->save();
+        $report = ReportArticle::findOrFail($id);
+        $report->accepted = true;
+        $report->save();
+        $article = $report->article;
+        Mail::to($report->article->user->email)->send(new MailReportArticle($report));
         return back();
     }
 
     public function rejectedArticle($id)
     {
-        $offer = ReportArticle::findOrFail($id);
-        $offer->accepted = false;
-        $offer->save();
+        $report = ReportArticle::findOrFail($id);
+        $report->accepted = false;
+        $report->save();
+
         return back();
     }
 
 
     public function showReportByUser($id){
         $user = User::findOrFail($id);
-        $reportArticle = $user->articleReportAccepted()->where('accepted')->paginate(10);
+        $reportArticle = $user->articleReportAccepted()->paginate(10);
         return view('report.reportList',compact('reportArticle'));
     }
+
 }

@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ArticleContrller extends Controller
+class ArticleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>[]]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,9 @@ class ArticleContrller extends Controller
      */
     public function index()
     {
-        $articles = Article::paginate(10);
+        $articles = Article::orDoesntHave('reports')->orWhereHas('reports',function($q){
+            $q->where('accepted', false)->orWhere('accepted', null);
+        })->paginate(9);
         return view('article.articleList',compact('articles'));
     }
 
@@ -48,7 +56,7 @@ class ArticleContrller extends Controller
     public function show($id)
     {
         $article = Article::findOrFail($id);
-
+        return view('article.fitxa',compact('article'));
     }
 
     /**
@@ -87,4 +95,19 @@ class ArticleContrller extends Controller
         return redirect()->route('articles.index');
 
     }
+
+
+    public function searchByParameters(Request $request){
+        $articles = Article::name($request->name)->paginate(9);
+        $articles->appends(['name'=>$request->name]);
+        return view('article.articleList',compact('articles'));
+    }
+
+    public function searchByUser($id){
+        $user = User::findOrFail($id);
+        $articles = $user->articles()->paginate(9);
+        return view('article.articleList',compact('articles'));
+    }
+
+
 }

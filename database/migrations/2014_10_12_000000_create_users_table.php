@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->text('imagen')->nullable();
-            $table->float('latitud');
-            $table->float('longitud');
+            $table->float('latitud')->nullable();
+            $table->float('longitud')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

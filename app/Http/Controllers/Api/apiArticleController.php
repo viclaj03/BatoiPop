@@ -4,15 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
+use App\Mail\MailNewArticle;
 use App\Models\Article;
 use App\Models\ReportArticle;
 use App\Models\Valoration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class apiArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum',['except'=>['index','show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -53,6 +59,8 @@ class apiArticleController extends Controller
             sin( radians(" . $parametrosDistancia[0] . ") ) *
             sin( radians(latitud) ) ) )
             AS distance")->having("distance", "<", $parametrosDistancia[2]);
+        })->doesntHave('reports')->orWhereHas('reports',function($q){
+            $q->where('accepted', false)->orWhere('accepted', null);
         })->paginate(9);
         return response()->json($article,200);
 
@@ -67,12 +75,15 @@ class apiArticleController extends Controller
     public function store(Request $request)
     {
         $article = new Article();
-        $article->propriety_id = Auth::user();
-        $article->category_id = $request->category_id;
+        $article->owner_id = $request->user()->id;
+        $article->name = $request->name;
+        $article->category_id = $request->category;
         $article->description = $request->description;
         $article->price = $request->price;
-        $article->location = $request->location;
+        $article->latitud = $request->latitud;
+        $article->longitud = $request->longitud;
         $article->save();
+        //Mail::to($article->user->email)->send(new MailNewArticle($article));
         return response()->json($article,201);
     }
 
@@ -85,7 +96,7 @@ class apiArticleController extends Controller
     public function show(Article $article)
     {
         $article = new  ArticleResource($article);
-        return response()->json($article,200);
+        return response()->json($article,201);
     }
 
     /**

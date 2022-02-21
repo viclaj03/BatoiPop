@@ -3,7 +3,7 @@
     <thead class="thead-dark bg-primary">
     <tr>
         <th>Id</th>
-        <th>Enviado por</th>
+        <th>Propietario</th>
         <th>descripion</th>
         <th>Demandante</th>
         <th>Acciones</th>
@@ -25,8 +25,20 @@
                 <td>{{$report->userReport->name}}</td>
 
                 <td>
+                    <a href="{{route('articles.show',$report->article)}}"><i class="bi bi-eye"></i></a>
+
+                    @if( $report->accepted === null ||  $report->accepted   )
                     <a href="{{route('reportArticle.rejected',$report)}}"><i class="bi bi-hand-thumbs-down"></i></a>
-                    <a href="{{route('reportArticle.accepted',$report)}}"><i class="bi bi-hand-thumbs-up"></i></a>
+                    @else
+                        <i class="bi bi-hand-thumbs-down-fill"></i>
+                    @endif
+                    @if($report->accepted)
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
+                    @else
+                        <a href="{{route('reportArticle.accepted',$report)}}"><i class="bi bi-hand-thumbs-up"></i></a>
+                    @endif
+
+
                     <form id="deleteUser" action="{{ route('reportMessage.destroy', $report) }}" method="POST" class="d-inline-block">
                         @method('DELETE')
                         @csrf

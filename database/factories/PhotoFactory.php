@@ -15,7 +15,7 @@ class PhotoFactory extends Factory
     public function definition()
     {
         return [
-            'image'=>$this->faker->image(),
+            'image'=>'images/prueba.jpg',
         ];
     }
 }

@@ -1,47 +1,53 @@
 <h1>Listado de Articulos</h1>
-<table class="table table-striped table-hover">
-    <thead class="thead-dark bg-primary">
-    <tr>
-        <th>Id</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Categoria</th>
-        <th>Loacalización</th>
-        <th>Fecha de subida</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($articles as $article)
-        <tr>
-            <td>{{$article->id}}</td>
-            <td>{{$article->name}}</td>
-            <td>{{$article->price}} €</td>
-            <td>{{$article->category->name}} </td>
-            <td>{{$article->location}} </td>
-            <td>{{ \Carbon\Carbon::make($article->created_at)->format("d-m-y")}} </td>
-            <td>
-                @if($article->imagen)
-                    <img src="{{asset($article->imagen)}}" width="50px">
-                @else
-                    <img src="{{asset('images/no-photo-employee.png')}}" width="50px">
+@foreach($articles as $article)
+    <div class="col mb-5">
+        <div class="card h-100" style="width: 18rem;">
+
+            <div id="myCarousel{{$article->id}}" class="carousel slide" data-ride="carousel">
+
+                <ul class="carousel-indicators">
+                    @foreach($article->photos as $key =>$photo)
+                    <li data-target="#myCarousel{{$article->id}}" data-slide-to="{{$key}}" class="{{$key===0?'active':''}}"></li>
+                    @endforeach
+                </ul>
+
+                <div class="carousel-inner">
+                    @foreach($article->photos as $key =>$photo)
+                    <div class="carousel-item  {{$key===0?'active':''}} " data-interval="10000">
+                        <img class="card-img-top d-block w-100"  src="{{asset($photo->image)}}"  alt="product">
+                    </div>
+                    @endforeach
+                </div>
+                <a class="carousel-control-prev" href="#myCarousel{{$article->id}}" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel{{$article->id}}" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">{{$article->name}}</h5>
+                <p class="card-text">{{$article->description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Precio:{{$article->price}}</li>
+                <li class="list-group-item">Categoria:{{$article->category->name}}</li>
+                <li class="list-group-item">Propietario: {{$article->user->name}}</li>
+                @if($article->buyer_id)
+                    <li class="list-group-item">Comprador: {{$article->buyer->name}}</li>
                 @endif
-            </td>
-            <td>
-                <button
-                    class="btn btn-sm"
-                    title="Ver Usurio"
-                >
-                    <a href="{{route('articles.show',$article)}}"> <i class="bi bi-eye"></i> </a>
-                </button>
-                <button
-                    class="btn btn-sm"
-                    title="Ver libros"
-                >
-                    <i class="bi bi-trash"></i>
-                </button>
-            </td>
-        </tr>
-    @endforeach
-    </tbody>
-</table>
+            </ul>
+            <div class="card-body">
+                <a href="{{route('articles.show',$article)}}" class="card-link">Ver articulo</a>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+
+
+
+
+
+

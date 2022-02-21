@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('login', [LoginController::class, 'login'])->name('login');
 
-Route::apiResource('articles',\App\Http\Controllers\Api\apiArticleController::class);
+Route::apiResource('articles',Api\apiArticleController::class);
 Route::apiResource('categories',\App\Http\Controllers\Api\apiCategoryController::class);
 Route::apiResource('users',\App\Http\Controllers\Api\apiUserController::class);
 Route::apiResource('tags',\App\Http\Controllers\Api\apiTagController::class);

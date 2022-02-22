@@ -24,8 +24,4 @@ class Message extends Model
     public  function reports(){
         return $this->hasMany(ReportMessage::class);
     }
-
-
-
-
 }

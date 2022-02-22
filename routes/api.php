@@ -27,4 +27,4 @@ Route::apiResource('articles',Api\apiArticleController::class);
 Route::apiResource('categories',\App\Http\Controllers\Api\apiCategoryController::class);
 Route::apiResource('users',\App\Http\Controllers\Api\apiUserController::class);
 Route::apiResource('tags',\App\Http\Controllers\Api\apiTagController::class);
-
+Route::apiResource('reportArticles',Api\apiReportArticleController::class);

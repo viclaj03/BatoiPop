@@ -10,11 +10,11 @@ class Message extends Model
     use HasFactory;
 
     public  function userTransmitter(){
-        return  $this->belongsTo(User::class,'id_transmitter');
+        return  $this->belongsTo(User::class,'id_transmitter','id');
     }
 
     public  function userReciver(){
-        return  $this->belongsTo(User::class,'id_receiver');
+        return  $this->belongsTo(User::class,'id_receiver','id');
     }
 
     public  function article(){

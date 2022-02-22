@@ -13,12 +13,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-class apiArticleController extends Controller
+class apiArticleController extends apiController
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum',['except'=>['index','show']]);
-    }
+
     /**
      * Display a listing of the resource.
      *
@@ -65,7 +62,7 @@ class apiArticleController extends Controller
         })->doesntHave('reports')->orWhereHas('reports',function($q){
             $q->where('accepted', false)->orWhere('accepted', null);
         })->paginate(9);
-        return response()->json($article,200);
+        return $this->success($article);
 
     }
 
@@ -87,7 +84,7 @@ class apiArticleController extends Controller
         $article->longitud = $request->longitud;
         $article->save();
         //Mail::to($article->user->email)->send(new MailNewArticle($article));
-        return response()->json($article,201);
+        return response()->json(['status'=>"success",'data'=>$article],201);
     }
 
     /**
@@ -98,8 +95,7 @@ class apiArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $article2 = new  ArticleResource($article);
-        return response()->json($article2,200);
+        return $this->success(new  ArticleResource($article));
     }
 
     /**
@@ -116,7 +112,7 @@ class apiArticleController extends Controller
         $article->price = $request->price;
         $article->location = $request->location;
         $article->save();
-        return response()->json($article,201);
+        return response()->json(['status'=>"success",'data'=>$article],201);
     }
 
     /**

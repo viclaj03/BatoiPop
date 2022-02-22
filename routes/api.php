@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\apiArticleController;
 use App\Http\Controllers\Api\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +31,6 @@ Route::apiResource('categories',\App\Http\Controllers\Api\apiCategoryController:
 Route::apiResource('users',\App\Http\Controllers\Api\apiUserController::class);
 Route::apiResource('valoraciones',\App\Http\Controllers\Api\ValorationController::class);
 Route::apiResource('tags',\App\Http\Controllers\Api\apiTagController::class);
+Route::apiResource('messages',\App\Http\Controllers\Api\apiMessageController::class);
+
 Route::apiResource('reportArticles',Api\apiReportArticleController::class);

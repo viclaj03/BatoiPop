@@ -23,11 +23,11 @@ class apiArticleController extends apiController
      */
     public function index(Request $request)
     {
-        $owner_id = $request->input('owner_id');
-        $category_id = $request->input('category_id');
-        $name = $request->input('name');
-        $price1 = $request->input('price1');
-        $price2 = $request->input('price2');
+        $owner_id = $request->input('owner_id')??null;
+        $category_id = $request->input('category_id')??null;
+        $name = $request->input('name')??null;
+        $price1 = $request->input('price1')??null;
+        $price2 = $request->input('price2')??null;
         $price = [];
         if ($price1 && $price2) {
             $price = [$price1, $price2];
@@ -64,6 +64,15 @@ class apiArticleController extends apiController
         })->paginate(9);
         return $this->success($article);
 
+    }
+
+    public function articleByUser(Request $request){
+        $owner_id = $request->input('owner_id');
+       // return response()->json(['satuss'=>"m",'data'=>$owner_id],201);
+        $article = Article::when($owner_id,function($query,$owner_id) {
+            return $query->where('owner_id', $owner_id);
+        })->get();
+        return response()->json(['satuss'=>"m",'data'=>$article],201);
     }
 
     /**

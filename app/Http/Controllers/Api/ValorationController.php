@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\MailNewUser;
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Models\Valoration;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
-class apiUserController extends Controller
+class ValorationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +15,7 @@ class apiUserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        return response()->json($users,200);
+        //
     }
 
     /**
@@ -30,35 +26,38 @@ class apiUserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        //Mail::to($user->email)->send(new MailNewUser($user));
-        return response()->json(['status'=>"success",'data'=>$user],201);
+
+        $valoracion = new Valoration;
+
+        $valoracion->commentary = $request->commentary;
+        $valoracion->stars = $request->stars;
+        //$valoracion->id_user_emissor = $request->user()->id;
+        $valoracion->id_user_emissor=3;
+        $valoracion->id_user_receptor = $request->id_user_receptor;
+        $valoracion->save();
+
+        return response()->json($valoracion, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Valoration  $valoration
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Valoration $valoration)
     {
-        $user = new  UserResource($user);
-        return response()->json($user,200);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Valoration  $valoration
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Valoration $valoration)
     {
         //
     }
@@ -66,10 +65,10 @@ class apiUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Valoration  $valoration
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Valoration $valoration)
     {
         //
     }

@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="title">Nombre de usuario:</label>
+                                <label for="title">Email:</label>
                                 <input name="email" type="text" class="form-control " id="title" aria-describedby="titleHelp" placeholder="email" value="{{old('email')??(isset($employee)?$employee->email:'')}}">
                                 @if ($errors->has('email'))
                                     <div class="text-danger">

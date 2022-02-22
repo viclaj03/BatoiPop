@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\MailNewUser;
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Models\ReportMessage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
-class apiUserController extends Controller
+class apiReportMessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +15,7 @@ class apiUserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        return response()->json($users,200);
+        //
     }
 
     /**
@@ -30,35 +26,33 @@ class apiUserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        //Mail::to($user->email)->send(new MailNewUser($user));
-        return response()->json(['status'=>"success",'data'=>$user],201);
+        $report = new ReportMessage();
+        $report->article_id = $request->message;
+        $report->user_id = $request->user()->id;
+        $report->description = $request->reportComent;
+        $report->save();
+        return response()->json(['status'=>"success",'data'=>$report],201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\ReportMessage  $reportMessage
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(ReportMessage $reportMessage)
     {
-        $user = new  UserResource($user);
-        return response()->json($user,200);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\ReportMessage  $reportMessage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, ReportMessage $reportMessage)
     {
         //
     }
@@ -66,10 +60,10 @@ class apiUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\ReportMessage  $reportMessage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(ReportMessage $reportMessage)
     {
         //
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Photo;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 
@@ -28,11 +29,8 @@ class ArticleResource extends JsonResource
             $valoration = ($totalStars / count($this->user->valorations));
         }
 
-        $mensajes = [];
-        foreach ($this->messages as $message) {
-            $mensaje = array($message->message,$message->userTransmitter->name, $message->userTransmitter->imagen);
-            array_push($mensajes,$mensaje);
-        }
+
+
         return [
             "id"=>$this->id,
             "name"=>$this->name,
@@ -46,7 +44,8 @@ class ArticleResource extends JsonResource
             "price"=>$this->price,
             "longitud"=>$this->longitud,
             "latitud"=>$this->latitud,
-            "messages"=>$mensajes,
+            "messages"=>MessageResource::collection($this->messages),
+            "photos"=>$this->photos,
         ];
     }
 }

@@ -37,7 +37,7 @@ class ArticleResource extends JsonResource
             "owner"=> [
                 'name'=>$this->user->name,
                 'img'=>$this->user->imagen],
-            "valoration"=> $valoration ,
+            "valoration"=> round($valoration) ,
             "category"=>$this->category->name,
             "tags"=> $this->tags,
             "description"=>$this->description,

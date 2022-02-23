@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Mail\MailNewArticle;
 use App\Models\Article;
+use App\Models\Photo;
 use App\Models\ReportArticle;
 use App\Models\Valoration;
 use Illuminate\Http\Request;
@@ -83,6 +84,14 @@ class apiArticleController extends apiController
         $article->latitud = $request->latitud;
         $article->longitud = $request->longitud;
         $article->save();
+        dd(9);
+        foreach ($request->images as $image) {
+            $photo = new Photo();
+            $photo->id_article = $article->id;
+            $photo->image = $image;
+            $photo->save();
+        }
+
         //Mail::to($article->user->email)->send(new MailNewArticle($article));
         return response()->json(['status'=>"success",'data'=>$article],201);
     }

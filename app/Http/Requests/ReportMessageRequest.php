@@ -51,7 +51,7 @@ class ReportMessageRequest extends FormRequest
     {
         return [
             'message' => 'required|numeric|exists:messages,id',
-            'reportComent' =>'min:5|max:150'
+            'reportComent' =>'nullable|min:5|max:150'
         ];
     }
 }

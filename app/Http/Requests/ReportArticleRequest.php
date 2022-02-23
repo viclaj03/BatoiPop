@@ -53,7 +53,7 @@ class ReportArticleRequest extends FormRequest
     {
         return [
             'article' => 'required|numeric|exists:articles,id',
-            'reportComent' =>'min:5|max:150'
+            'reportComent' =>'nullable|min:5|max:150'
         ];
     }
 }

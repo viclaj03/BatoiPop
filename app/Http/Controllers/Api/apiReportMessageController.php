@@ -30,7 +30,9 @@ class apiReportMessageController extends Controller
         $report = new ReportMessage();
         $report->article_id = $request->message;
         $report->user_id = $request->user()->id;
-        $report->description = $request->reportComent;
+        if ($request->reportComent) {
+            $report->description = $request->reportComent;
+        }
         $report->save();
         return response()->json(['status'=>"success",'data'=>$report],201);
     }

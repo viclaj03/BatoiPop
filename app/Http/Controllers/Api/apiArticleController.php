@@ -91,7 +91,7 @@ class apiArticleController extends apiController
         $article->latitud = $request->latitud;
         $article->longitud = $request->longitud;
         $article->save();
-        //Mail::to($article->user->email)->send(new MailNewArticle($article));
+        Mail::to($article->user->email)->send(new MailNewArticle($article));
         return response()->json(['status'=>"success",'data'=>$article],201);
     }
 

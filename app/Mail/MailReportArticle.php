@@ -13,7 +13,7 @@ class MailReportArticle extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = "Mensaje Denunciado";
+    public $subject = "Articulo Denunciado";
     public $date;
     /**
      * Create a new message instance.
@@ -32,7 +32,7 @@ class MailReportArticle extends Mailable
      */
     public function build()
     {
-        $img = env('APP_URL').$this->date->article->photos[0]->image;
-        return $this->view('mail.reportarticle')->with(['user'=>$this->date,'img'=>$img]);
+
+        return $this->view('mail.reportarticle')->with(['user'=>$this->date]);
     }
 }

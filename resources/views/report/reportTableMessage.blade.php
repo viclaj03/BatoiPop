@@ -22,7 +22,7 @@
             <td>{{$report->id}}</td>
             <td>{{$report->message->userTransmitter->name}}</td>
             <td>{{$report->description}}</td>
-            <td>{{$report->message->article->user->name}}</td>
+            <td>{{$report->reportUser->name}}</td>
 
             <td>
                 <a href="{{route('message.show',$report->message)}}"><i class="bi bi-eye"></i></a>

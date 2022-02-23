@@ -16,7 +16,7 @@ class CategoryFactory extends Factory
         return [
             'name'=>$this->faker->name(),
             'desc'=>$this->faker->text(200),
-            'image'=>$this->faker->image()
+            'image'=> 'images/moto.png'
         ];
     }
 }

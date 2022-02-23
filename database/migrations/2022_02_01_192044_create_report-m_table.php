@@ -18,6 +18,7 @@ class CreateReportMTable extends Migration
             $table->foreignId('message_id')->unique()->references('id')->on('messages')->onDelete('cascade');
             $table->string('description')->nullable();
             $table->boolean('accepted')->nullable();
+            $table->foreignId('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }

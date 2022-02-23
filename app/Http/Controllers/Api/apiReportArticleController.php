@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReportArticleRequest;
 use App\Models\ReportArticle;
 use Illuminate\Http\Request;
 
@@ -29,15 +30,16 @@ class apiReportArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReportArticleRequest $request)
     {
         $report = new ReportArticle();
         $report->article_id = $request->article;
         $report->user_id = $request->user()->id;
-        $report->description = $request->reportComent;
+        if ($request->reportComent) {
+            $report->description = $request->reportComent;
+        }
         $report->save();
         return response()->json(['status'=>"success",'data'=>$report],201);
-
     }
 
     /**

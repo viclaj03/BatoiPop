@@ -38,6 +38,7 @@ class apiReportArticleController extends Controller
         if ($request->reportComent) {
             $report->description = $request->reportComent;
         }
+
         $report->save();
         return response()->json(['status'=>"success",'data'=>$report],201);
     }

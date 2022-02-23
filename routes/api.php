@@ -37,3 +37,4 @@ Route::apiResource('tags',\App\Http\Controllers\Api\apiTagController::class);
 Route::apiResource('messages',\App\Http\Controllers\Api\apiMessageController::class);
 
 Route::apiResource('reportArticles',Api\apiReportArticleController::class);
+Route::apiResource('reportMessage',Api\apiReportMessageController::class);

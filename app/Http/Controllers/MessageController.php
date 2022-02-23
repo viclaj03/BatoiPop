@@ -98,4 +98,6 @@ class MessageController extends Controller
 
         $reportMessage  = Message::where('id_transmitter','=',$user->id)->get();
     }
+
+
 }

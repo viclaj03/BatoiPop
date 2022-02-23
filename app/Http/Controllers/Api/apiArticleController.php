@@ -63,7 +63,6 @@ class apiArticleController extends apiController
             $q->where('accepted', false)->orWhere('accepted', null);
         })->paginate(9);
         return $this->success($article);
-
     }
 
     public function articleByUser(Request $request){

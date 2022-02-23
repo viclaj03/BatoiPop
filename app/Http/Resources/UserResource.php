@@ -20,12 +20,12 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         $totalStars = 0;
-        $valoration = $totalStars;
+        $valorationNum = $totalStars;
         if (count($this->valorations) != 0) {
             foreach ($this->valorations as $valorationItem) {
                 $totalStars += $valorationItem->stars;
             }
-            $valoration = ($totalStars / count($this->valorations));
+            $valorationNum  = ($totalStars / count($this->valorations));
         }
 
         $valoraciones = [];
@@ -37,7 +37,7 @@ class UserResource extends JsonResource
             "id"=>$this->id,
             "name"=>$this->name,
             "img"=>$this->imagen,
-            "valoration"=> $valoration ,
+            "valoration"=> round($valorationNum),
             "location"=>$this->location,
             "valorationsUser"=> $valoraciones,
         ];

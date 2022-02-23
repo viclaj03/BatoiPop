@@ -24,6 +24,7 @@ class apiArticleController extends apiController
     public function index(Request $request)
     {
         $owner_id = $request->input('owner_id')??null;
+        $buyer_id = $request->input('buyer_id')??null;
         $category_id = $request->input('category_id')??null;
         $name = $request->input('name')??null;
         $price1 = $request->input('price1')??null;
@@ -57,6 +58,8 @@ class apiArticleController extends apiController
             sin( radians(" . $parametrosDistancia[0] . ") ) *
             sin( radians(latitud) ) ) )
             AS distance")->having("distance", "<", $parametrosDistancia[2]);
+        })->when($buyer_id,function($query,$buyer_id) {
+            return $query->where('buyer_id', $buyer_id);
         })->when($owner_id,function($query,$owner_id) {
             return $query->where('owner_id', $owner_id);
         })->doesntHave('reports')->orWhereHas('reports',function($q){

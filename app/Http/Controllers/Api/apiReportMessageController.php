@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReportMessageRequest;
 use App\Models\ReportMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class apiReportMessageController extends Controller
 {
@@ -25,11 +26,11 @@ class apiReportMessageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ReportMessageRequest $request)
+    public function store(Request $request)
     {
         $report = new ReportMessage();
-        $report->article_id = $request->message;
-        $report->user_id = $request->user()->id;
+        $report->message_id = $request->message;
+        $report->id_user = $request->user()->id;
         if ($request->reportComent) {
             $report->description = $request->reportComent;
         }

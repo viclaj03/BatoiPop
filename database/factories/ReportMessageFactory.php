@@ -16,7 +16,8 @@ class ReportMessageFactory extends Factory
     {
         return [
            'message_id'=>Message::inRandomOrder()->first(),
-           'description'=>$this->faker->text(100)
+           'description'=>$this->faker->text(100),
+            'id_user'=> '50',
         ];
     }
 }

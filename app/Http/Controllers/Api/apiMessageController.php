@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MessageResource;
+use App\Mail\MailMessageSedder;
+use App\Models\Article;
 use App\Models\Message;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class apiMessageController extends Controller
 {
@@ -72,5 +76,17 @@ class apiMessageController extends Controller
     public function destroy(Tag $tag)
     {
         //
+    }
+
+
+    public function messageBuy(Request $request){
+        $message = new Message();
+        $message->buy = true;
+        $message->id_transmitter = $request->user()->id;
+        $message->id_article = $request->article;
+        $message->message = $request->message;
+        $message->save();
+        //Mail::to($message->article->user->email)->send(new MailMessageSedder($message));
+        return response()->json(['status'=>"success",'data'=>$message],201);
     }
 }

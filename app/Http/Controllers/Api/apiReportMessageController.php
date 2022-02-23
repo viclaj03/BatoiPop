@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReportMessageRequest;
 use App\Models\ReportMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class apiReportMessageController extends Controller
 {
@@ -27,9 +29,11 @@ class apiReportMessageController extends Controller
     public function store(Request $request)
     {
         $report = new ReportMessage();
-        $report->article_id = $request->message;
-        $report->user_id = $request->user()->id;
-        $report->description = $request->reportComent;
+        $report->message_id = $request->message;
+        $report->id_user = $request->user()->id;
+        if ($request->reportComent) {
+            $report->description = $request->reportComent;
+        }
         $report->save();
         return response()->json(['status'=>"success",'data'=>$report],201);
     }

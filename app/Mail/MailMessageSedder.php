@@ -2,27 +2,26 @@
 
 namespace App\Mail;
 
-use App\Models\ReportArticle;
-use App\Models\ReportMessage;
+use App\Models\Article;
+use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailReportArticle extends Mailable
+class MailMessageSedder extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $subject = "Articulo Denunciado";
+    public $subject = "Nuevo mensaje";
     public $date;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(ReportArticle $report)
+    public function __construct(Message $article)
     {
-        $this->date = $report;
+        $this->date = $article;
     }
 
     /**
@@ -32,7 +31,6 @@ class MailReportArticle extends Mailable
      */
     public function build()
     {
-
-        return $this->view('mail.reportarticle')->with(['user'=>$this->date]);
+        return $this->view('mail.message')->with(['date'=>$this->date]);
     }
 }

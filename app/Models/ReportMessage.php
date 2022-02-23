@@ -20,6 +20,10 @@ class ReportMessage extends Model
     public function getNameUserAttribute(){
         return $this->message->userTransmitter->name;
     }
+
+    public function reportUser(){
+        return $this->belongsTo(User::class,'id_user','id');
+    }
 }
 
 

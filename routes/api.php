@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::get('articlesUser', [apiArticleController::class, 'articleByUser']);
+Route::get('articlesUserBuyer', [apiArticleController::class, 'articleByBuyer']);
+
 
 Route::post('buy-message', [Api\apiMessageController::class, 'messageBuy']);
 

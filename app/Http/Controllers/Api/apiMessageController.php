@@ -86,7 +86,7 @@ class apiMessageController extends Controller
         $message->id_article = $request->article;
         $message->message = $request->message;
         $message->save();
-        //Mail::to($message->article->user->email)->send(new MailMessageSedder($message));
+        Mail::to($message->article->user->email)->send(new MailMessageSedder($message));
         return response()->json(['status'=>"success",'data'=>$message],201);
     }
 }

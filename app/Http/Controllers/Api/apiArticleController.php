@@ -24,8 +24,6 @@ class apiArticleController extends apiController
      */
     public function index(Request $request)
     {
-        $owner_id = $request->input('owner_id')??null;
-        $buyer_id = $request->input('buyer_id')??null;
         $category_id = $request->input('category_id')??null;
         $name = $request->input('name')??null;
         $price1 = $request->input('price1')??null;
@@ -59,10 +57,6 @@ class apiArticleController extends apiController
             sin( radians(" . $parametrosDistancia[0] . ") ) *
             sin( radians(latitud) ) ) )
             AS distance")->having("distance", "<", $parametrosDistancia[2]);
-        })->when($buyer_id,function($query,$buyer_id) {
-            return $query->where('buyer_id', $buyer_id);
-        })->when($owner_id,function($query,$owner_id) {
-            return $query->where('owner_id', $owner_id);
         })->doesntHave('reports')->orWhereHas('reports',function($q){
             $q->where('accepted', false)->orWhere('accepted', null);
         })->paginate(9);
@@ -70,11 +64,18 @@ class apiArticleController extends apiController
     }
 
     public function articleByUser(Request $request){
-        $owner_id = $request->input('owner_id');
-       // return response()->json(['satuss'=>"m",'data'=>$owner_id],201);
+        $owner_id = $request->input('id')??null;
         $article = Article::when($owner_id,function($query,$owner_id) {
             return $query->where('owner_id', $owner_id);
-        })->get();
+        })->paginate(9);
+        return response()->json(['satuss'=>"m",'data'=>$article],201);
+    }
+
+    public function articleByBuyer(Request $request){
+        $buyer_id = $request->input('id')??null;
+        $article = Article::when($buyer_id,function($query,$buyer_id) {
+            return $query->where('buyer_id', $buyer_id);
+        })->paginate(9);
         return response()->json(['satuss'=>"m",'data'=>$article],201);
     }
 
@@ -86,26 +87,36 @@ class apiArticleController extends apiController
      */
     public function store(Request $request)
     {
-        $article = new Article();
+
+       $article = new Article();
         $article->owner_id = $request->user()->id;
         $article->name = $request->name;
         $article->category_id = $request->category;
         $article->description = $request->description;
         $article->price = $request->price;
-        $article->latitud = $request->latitud;
-        $article->longitud = $request->longitud;
+        $article->latitud = $request->input('latitud');;
+        $article->longitud = $request->input('longitud');
         $article->save();
-        dd(9);
-        foreach ($request->images as $image) {
-            $photo = new Photo();
-            $photo->id_article = $article->id;
-            $photo->image = $image;
-            $photo->save();
+
+        $files = $request->file('file');
+        if(!is_array($files)){
+            $files = [$files];
         }
 
-        //Mail::to($article->user->email)->send(new MailNewArticle($article));
-        return response()->json(['status'=>"success",'data'=>$article],201);
+        for($i=0; $i<count($files); $i++){
+            $photo = new Photo();
+            $photo->id_article = $article->id;
+            $file = $files[$i];
+            $filename = $file->getClientOriginalName();
+            $filename = generar_token_seguro(5)  . $filename;
+            $photo->image = $file->move('images', $filename);
+            $photo->save();
+        }
+        Mail::to($article->user->email)->send(new MailNewArticle($article));
+       return response()->json(['status'=>"success",'data'=>$article,'data'=>$photo],201);
     }
+
+
 
     /**
      * Display the specified resource.

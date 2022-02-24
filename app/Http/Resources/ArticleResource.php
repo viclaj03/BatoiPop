@@ -45,7 +45,7 @@ class ArticleResource extends JsonResource
             "price"=>$this->price,
             "longitud"=>$this->longitud,
             "latitud"=>$this->latitud,
-            "messages"=>MessageResource::collection($this->messages),
+            "messages"=>MessageResource::collection($this->messages)->where('buy',false),
             "photos"=>$this->photos,
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
+use App\Mail\MailBuyArticle;
 use App\Mail\MailNewArticle;
 use App\Models\Article;
 use App\Models\Photo;
@@ -68,7 +69,7 @@ class apiArticleController extends apiController
         $article = Article::when($owner_id,function($query,$owner_id) {
             return $query->where('owner_id', $owner_id);
         })->paginate(9);
-        return response()->json(['satuss'=>"m",'data'=>$article],201);
+        return response()->json(['status' => "success",'data'=>$article],201);
     }
 
     public function articleByBuyer(Request $request){
@@ -76,7 +77,7 @@ class apiArticleController extends apiController
         $article = Article::when($buyer_id,function($query,$buyer_id) {
             return $query->where('buyer_id', $buyer_id);
         })->paginate(9);
-        return response()->json(['satuss'=>"m",'data'=>$article],201);
+        return response()->json(['status' => "success",'data'=>$article],201);
     }
 
     /**
@@ -87,33 +88,38 @@ class apiArticleController extends apiController
      */
     public function store(Request $request)
     {
+        if ($request->file('file')) {
 
-       $article = new Article();
-        $article->owner_id = $request->user()->id;
-        $article->name = $request->name;
-        $article->category_id = $request->category;
-        $article->description = $request->description;
-        $article->price = $request->price;
-        $article->latitud = $request->input('latitud');;
-        $article->longitud = $request->input('longitud');
-        $article->save();
 
-        $files = $request->file('file');
-        if(!is_array($files)){
-            $files = [$files];
+            $article = new Article();
+            $article->owner_id = $request->user()->id;
+            $article->name = $request->name;
+            $article->category_id = $request->category;
+            $article->description = $request->description;
+            $article->price = $request->price;
+            $article->latitud = $request->input('latitud');;
+            $article->longitud = $request->input('longitud');
+            $article->save();
+
+            $files = $request->file('file');
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+
+            for ($i = 0; $i < count($files); $i++) {
+                $photo = new Photo();
+                $photo->id_article = $article->id;
+                $file = $files[$i];
+                $filename = $file->getClientOriginalName();
+                $filename = generar_token_seguro(5) . $filename;
+                $photo->image = $file->move('images', $filename);
+                $photo->save();
+            }
+            Mail::to($article->user->email)->send(new MailNewArticle($article));
+            return response()->json(['status' => "success", 'data' => $article, 'data' => $photo], 201);
+        } else{
+            return response()->json(['status' => "success", 'data' => $article, 'data' => $photo], 201);
         }
-
-        for($i=0; $i<count($files); $i++){
-            $photo = new Photo();
-            $photo->id_article = $article->id;
-            $file = $files[$i];
-            $filename = $file->getClientOriginalName();
-            $filename = generar_token_seguro(5)  . $filename;
-            $photo->image = $file->move('images', $filename);
-            $photo->save();
-        }
-        Mail::to($article->user->email)->send(new MailNewArticle($article));
-       return response()->json(['status'=>"success",'data'=>$article,'data'=>$photo],201);
     }
 
 
@@ -138,12 +144,26 @@ class apiArticleController extends apiController
      */
     public function update(Request $request, Article $article)
     {
+        dd(8);
         $article->category_id = $request->category_id;
         $article->description = $request->description;
         $article->price = $request->price;
         $article->location = $request->location;
         $article->save();
         return response()->json(['status'=>"success",'data'=>$article],201);
+    }
+
+    public function buyArticle(Request $request){
+        $article = Article::findOrFail($request->article);
+        $article->buyer_id = $request->user;
+        $article->save();
+
+
+
+        Mail::to($article->buyer->email)->send(new MailBuyArticle($article));
+
+        return response()->json(['status'=>"success",'data'=>$article],201);
+
     }
 
     /**

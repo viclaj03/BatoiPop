@@ -51,6 +51,10 @@ class User extends Authenticatable
         return $this->hasMany(Message::class,'id_transmitter','id');
     }
 
+    public function messageReciver(){
+        return $this->hasManyThrough(Message::class,Article::class,'owner_id','id_article');
+    }
+
     public function messageReport(){
         return $this->hasManyThrough(ReportMessage::class,Message::class,'id_transmitter','message_id',);
     }

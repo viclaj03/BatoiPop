@@ -26,8 +26,13 @@ Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::get('articlesUser', [apiArticleController::class, 'articleByUser']);
 Route::get('articlesUserBuyer', [apiArticleController::class, 'articleByBuyer']);
 
+Route::get('messagesBuyByUser', [Api\apiMessageController::class, 'messageUserBuy']);
+
+
 
 Route::post('buy-message', [Api\apiMessageController::class, 'messageBuy']);
+
+Route::post('buy-article', [Api\apiArticleController::class, 'buyArticle']);
 
 
 

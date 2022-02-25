@@ -104,6 +104,7 @@ class apiArticleController extends apiController
             }
 
 
+
            /* $files = $request->file('file');
             if (!is_array($files)) {
                 $files = [$files];

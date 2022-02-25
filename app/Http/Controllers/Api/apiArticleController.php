@@ -88,9 +88,7 @@ class apiArticleController extends apiController
      */
     public function store(Request $request)
     {
-        if ($request->file('file')) {
-
-
+        /*if ($request->file('file')) {*/
             $article = new Article();
             $article->owner_id = $request->user()->id;
             $article->name = $request->name;
@@ -101,7 +99,12 @@ class apiArticleController extends apiController
             $article->longitud = $request->input('longitud');
             $article->save();
 
-            $files = $request->file('file');
+            foreach ($request->etiquetas as $etiqueta){
+                $article->Tagger()->attach($etiqueta['id']);
+            }
+
+
+           /* $files = $request->file('file');
             if (!is_array($files)) {
                 $files = [$files];
             }
@@ -114,13 +117,14 @@ class apiArticleController extends apiController
                 $filename = generar_token_seguro(5) . $filename;
                 $photo->image = $file->move('images', $filename);
                 $photo->save();
-            }
-            Mail::to($article->user->email)->send(new MailNewArticle($article));
-            return response()->json(['status' => "success", 'data' => $article, 'data' => $photo], 201);
-        } else{
-            return response()->json(['status' => "success", 'data' => $article, 'data' => $photo], 201);
-        }
+            }*/
+           // Mail::to($article->user->email)->send(new MailNewArticle($article));
+            return response()->json(['status' => "success", 'data' => $article], 201);
+        /*} else{*/
+        /*}*/
     }
+
+
 
 
 

@@ -33,9 +33,10 @@ class apiMessageController extends Controller
 
         $user = User::findOrFail($request->input('id'));
         $messages = $user->messageReciver;
-
+        $messagesBuy = [];
         foreach ($messages as $key => $message){
-            if ($message->buy) {
+            //dd($message->article->id);
+            if ($message->buy && !$message->article->buyer_id) {
                 $messagesBuy[] = new MessageResource($message);
             }
         }

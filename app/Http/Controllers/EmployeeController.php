@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeValidator;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -15,13 +16,13 @@ class EmployeeController extends Controller
     public function __construct()
     {
         $this->middleware('auth',['except'=>[]]);
+        $this->middleware('employee:Employee',['except'=>['index']]);
     }
 
     public function index()
     {
         $employees = Employee::all();
         return view('employee.employeeList',compact('employees'));
-
     }
 
     /**
@@ -64,7 +65,9 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        return view('employee.form',compact('employee'));
+
     }
 
     /**
@@ -74,9 +77,18 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmployeeValidator $request, $id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        $employee->name = $request->name;
+        $employee->email = $request->email;
+        if ($request->file('photo')){
+            $originalName = explode($request->file('photo')->getClientOriginalExtension(), $request->file('photo')->getClientOriginalName())[0];
+        $nameFile = generar_token_seguro(5) . $originalName . $request->file('photo')->getClientOriginalExtension();
+        $employee->imagen = $request->file('photo')->move('images', $nameFile);
+    }
+        $employee->save();
+        return redirect()->route('employee.index');
     }
 
     /**
@@ -87,6 +99,6 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }

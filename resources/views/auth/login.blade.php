@@ -3,6 +3,7 @@
         <x-slot name="logo">
             <a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                hh
             </a>
         </x-slot>
 
@@ -31,7 +32,6 @@
                                 name="password"
                                 required autocomplete="current-password" />
             </div>
-
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
@@ -52,5 +52,9 @@
                 </x-button>
             </div>
         </form>
+        <br>
+        <div class="row">
+            <div class="col-md-12"> <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" href="/login-google"><img src="https://img.icons8.com/color/16/000000/google-logo.png">Logueate con google</a> </div>
+        </div> <br>
     </x-auth-card>
 </x-guest-layout>

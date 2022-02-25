@@ -17,8 +17,8 @@ class ValorationFactory extends Factory
         return [
             'stars'=>$this->faker->numberBetween(1,5),
             'commentary'=>$this->faker->text(100),
-            'id_user_receptor'=>User::inRandomOrder()->first(),
-            'id_user_emissor'=>User::inRandomOrder()->first(),
+            //'id_user_receptor'=>User::inRandomOrder()->first(),
+           // 'id_user_emissor'=>User::inRandomOrder()->first(),
         ];
     }
 }

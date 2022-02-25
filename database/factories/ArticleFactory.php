@@ -16,12 +16,13 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            'propriety_id'=>User::inRandomOrder()->first(),
+            'owner_id'=>User::inRandomOrder()->first(),
             'category_id'=>Category::inRandomOrder()->first(),
             'name'=>$this->faker->name(),
             'description'=>$this->faker->text(100),
             'price'=>$this->faker->randomFloat(2,1,2000),
-            'location'=>$this->faker->locale()
+            'latitud'=>$this->faker->latitude(),
+            'longitud'=>$this->faker->longitude(),
         ];
     }
 }

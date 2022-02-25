@@ -20,12 +20,11 @@
                     @endif
                 @endforeach
             </ul>
-            <form class="d-flex">
-                <a href="{{url('/logout')}}">
-                <button class="btn btn-outline-light" type="submit" >
+
+            <form class="d-flex" action="{{url('/logout')}}">
+                <button class="btn btn-outline-light" type="submit">
                     Exit
                 </button>
-                </a>
             </form>
         </div>
     </div>

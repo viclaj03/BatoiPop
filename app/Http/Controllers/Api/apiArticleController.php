@@ -103,6 +103,7 @@ class apiArticleController extends apiController
                 $article->Tagger()->attach($etiqueta['id']);
             }
 
+
            /* $files = $request->file('file');
             if (!is_array($files)) {
                 $files = [$files];

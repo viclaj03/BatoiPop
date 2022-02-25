@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
                 else if ($exception instanceof ValidationException)
                     return response()->json(["status" => "fail",'data' => $exception->errors()], 400);
                 else if ($exception instanceof QueryException)
-                    return response()->json(['error' => 'Datos no válidos'], 400);
+                    return response()->json(["status" => "fail",'data' => $exception->errors()], 400);
                 else if (isset($exception))
                     return response()->json(["status"=>'fail','data' => 'Error en la aplicación (' .get_class($exception) . '):' .$exception->getMessage()], 500);
             }

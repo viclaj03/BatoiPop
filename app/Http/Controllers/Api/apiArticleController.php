@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
+use App\Mail\MailBuyArticle;
 use App\Mail\MailNewArticle;
 use App\Models\Article;
+use App\Models\Photo;
 use App\Models\ReportArticle;
 use App\Models\Valoration;
 use Illuminate\Http\Request;
@@ -23,8 +25,6 @@ class apiArticleController extends apiController
      */
     public function index(Request $request)
     {
-        $owner_id = $request->input('owner_id')??null;
-        $buyer_id = $request->input('buyer_id')??null;
         $category_id = $request->input('category_id')??null;
         $name = $request->input('name')??null;
         $price1 = $request->input('price1')??null;
@@ -58,10 +58,6 @@ class apiArticleController extends apiController
             sin( radians(" . $parametrosDistancia[0] . ") ) *
             sin( radians(latitud) ) ) )
             AS distance")->having("distance", "<", $parametrosDistancia[2]);
-        })->when($buyer_id,function($query,$buyer_id) {
-            return $query->where('buyer_id', $buyer_id);
-        })->when($owner_id,function($query,$owner_id) {
-            return $query->where('owner_id', $owner_id);
         })->doesntHave('reports')->orWhereHas('reports',function($q){
             $q->where('accepted', false)->orWhere('accepted', null);
         })->paginate(9);
@@ -69,12 +65,19 @@ class apiArticleController extends apiController
     }
 
     public function articleByUser(Request $request){
-        $owner_id = $request->input('owner_id');
-       // return response()->json(['satuss'=>"m",'data'=>$owner_id],201);
+        $owner_id = $request->input('id')??null;
         $article = Article::when($owner_id,function($query,$owner_id) {
             return $query->where('owner_id', $owner_id);
-        })->get();
-        return response()->json(['satuss'=>"m",'data'=>$article],201);
+        })->paginate(9);
+        return response()->json(['status' => "success",'data'=>$article],201);
+    }
+
+    public function articleByBuyer(Request $request){
+        $buyer_id = $request->input('id')??null;
+        $article = Article::when($buyer_id,function($query,$buyer_id) {
+            return $query->where('buyer_id', $buyer_id);
+        })->paginate(9);
+        return response()->json(['status' => "success",'data'=>$article],201);
     }
 
     /**
@@ -85,18 +88,46 @@ class apiArticleController extends apiController
      */
     public function store(Request $request)
     {
-        $article = new Article();
-        $article->owner_id = $request->user()->id;
-        $article->name = $request->name;
-        $article->category_id = $request->category;
-        $article->description = $request->description;
-        $article->price = $request->price;
-        $article->latitud = $request->latitud;
-        $article->longitud = $request->longitud;
-        $article->save();
-        Mail::to($article->user->email)->send(new MailNewArticle($article));
-        return response()->json(['status'=>"success",'data'=>$article],201);
+        /*if ($request->file('file')) {*/
+            $article = new Article();
+            $article->owner_id = $request->user()->id;
+            $article->name = $request->name;
+            $article->category_id = $request->category;
+            $article->description = $request->description;
+            $article->price = $request->price;
+            $article->latitud = $request->input('latitud');;
+            $article->longitud = $request->input('longitud');
+            $article->save();
+
+            foreach ($request->etiquetas as $etiqueta){
+                $article->Tagger()->attach($etiqueta['id']);
+            }
+
+
+
+           /* $files = $request->file('file');
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+
+            for ($i = 0; $i < count($files); $i++) {
+                $photo = new Photo();
+                $photo->id_article = $article->id;
+                $file = $files[$i];
+                $filename = $file->getClientOriginalName();
+                $filename = generar_token_seguro(5) . $filename;
+                $photo->image = $file->move('images', $filename);
+                $photo->save();
+            }*/
+           // Mail::to($article->user->email)->send(new MailNewArticle($article));
+            return response()->json(['status' => "success", 'data' => $article], 201);
+        /*} else{*/
+        /*}*/
     }
+
+
+
+
 
     /**
      * Display the specified resource.
@@ -118,12 +149,26 @@ class apiArticleController extends apiController
      */
     public function update(Request $request, Article $article)
     {
+        dd(8);
         $article->category_id = $request->category_id;
         $article->description = $request->description;
         $article->price = $request->price;
         $article->location = $request->location;
         $article->save();
         return response()->json(['status'=>"success",'data'=>$article],201);
+    }
+
+    public function buyArticle(Request $request){
+        $article = Article::findOrFail($request->article);
+        $article->buyer_id = $request->user;
+        $article->save();
+
+
+
+        Mail::to($article->buyer->email)->send(new MailBuyArticle($article));
+
+        return response()->json(['status'=>"success",'data'=>$article],201);
+
     }
 
     /**

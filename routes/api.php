@@ -24,8 +24,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::get('articlesUser', [apiArticleController::class, 'articleByUser']);
+Route::get('articlesUserBuyer', [apiArticleController::class, 'articleByBuyer']);
+
+Route::get('messagesBuyByUser', [Api\apiMessageController::class, 'messageUserBuy']);
+
+
 
 Route::post('buy-message', [Api\apiMessageController::class, 'messageBuy']);
+
+Route::post('buy-article', [Api\apiArticleController::class, 'buyArticle']);
 
 
 
@@ -37,3 +44,4 @@ Route::apiResource('tags',\App\Http\Controllers\Api\apiTagController::class);
 Route::apiResource('messages',\App\Http\Controllers\Api\apiMessageController::class);
 
 Route::apiResource('reportArticles',Api\apiReportArticleController::class);
+Route::apiResource('reportMessage',Api\apiReportMessageController::class);

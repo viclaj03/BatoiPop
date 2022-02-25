@@ -20,12 +20,14 @@ class MessageResource extends JsonResource
     public function toArray($request)
     {
 
+
         return [
             "id"=>$this->id,
             "usuarioEmisor"=>$this->userTransmitter->name,
             "imagenUsuario"=>$this->userTransmitter->imagen,
             "message"=> $this->message ,
             "articulo"=>$this->article,
+            "id_user"=>$this->userTransmitter
         ];
     }
 }

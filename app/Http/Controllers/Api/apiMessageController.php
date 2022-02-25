@@ -17,7 +17,7 @@ class apiMessageController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:sanctum',['except'=>['index','show']]);
+        $this->middleware('auth:sanctum',['except'=>['index','show','messageUserBuy']]);
     }
     /**
      * Display a listing of the resource.
@@ -26,6 +26,22 @@ class apiMessageController extends Controller
      */
     public function index(Request $request)
     {
+    }
+
+
+    public function messageUserBuy(Request $request){
+
+        $user = User::findOrFail($request->input('id'));
+        $messages = $user->messageReciver;
+        $messagesBuy = [];
+        foreach ($messages as $key => $message){
+            //dd($message->article->id);
+            if ($message->buy && !$message->article->buyer_id) {
+                $messagesBuy[] = new MessageResource($message);
+            }
+        }
+
+        return response()->json(['satuss'=>"succes",'data'=>$messagesBuy],201);
     }
 
     /**
@@ -86,7 +102,7 @@ class apiMessageController extends Controller
         $message->id_article = $request->article;
         $message->message = $request->message;
         $message->save();
-        //Mail::to($message->article->user->email)->send(new MailMessageSedder($message));
+        Mail::to($message->article->user->email)->send(new MailMessageSedder($message));
         return response()->json(['status'=>"success",'data'=>$message],201);
     }
 }

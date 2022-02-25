@@ -39,9 +39,16 @@ class Article extends Model
         return $this->belongsTo(User::class,'buyer_id','id');
     }
 
-    public  function scopeName( $query, $name){
-        if ($name){
-            return $query->where('name','like','%'.$name.'%');
+    public  function scopeName( $query, $name)
+    {
+        if ($name) {
+            return $query->where('name', 'like', '%' . $name . '%');
         }
     }
+
+
+        public function Tagger(){
+            return $this->belongsToMany(Tag::class, 'tag_article');
+        }
+
 }

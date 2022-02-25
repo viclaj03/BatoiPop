@@ -15,7 +15,7 @@ class CreateReportMTable extends Migration
     {
         Schema::create('report_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('message_id')->unique()->references('id')->on('messages')->onDelete('cascade');
+            $table->foreignId('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->string('description')->nullable();
             $table->boolean('accepted')->nullable();
             $table->foreignId('id_user')->references('id')->on('users');
